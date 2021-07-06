@@ -1,0 +1,102 @@
+
+# -------------------------------------------------------------------------
+
+template:
+  params:
+    bootswatch: cerulean
+
+# -------------------------------------------------------------------------
+# Automatically switches, which verion should be built:
+# released or in-development
+
+development:
+  mode: auto
+
+# -------------------------------------------------------------------------
+# # If you need custom navigation bar, modify this section:
+
+# navbar:
+#   structure:
+#     left:  [version, home, intro, articles, tutorials, reference, news]
+#     right: [github]
+#   components:
+#     version:
+#       icon: fa-book
+#       menu:
+#       - text: "Documentation for version of package:"
+#       - text: Released
+#         href: https://r-hyperspec.github.io/ [..pkg-name...] /
+#       - text: In-development
+#         href: https://r-hyperspec.github.io/ [...pkg-name...] /dev/
+
+# -------------------------------------------------------------------------
+# # If you need custom webpage for articles, modify this section:
+
+# articles:
+#   - title: "Principles"
+#     navbar: ~
+#     desc: >
+#       The main functionality of this package
+#     contents:
+#     - vignette-1
+#     - vignette-1
+#   - title: "Case studies"
+#     desc: >
+#       The example workflows.
+#     contents:
+#     - vignette-3
+#     - vignette-4
+
+# -------------------------------------------------------------------------
+# # If you need links for authors, modify this section:
+
+# authors:
+#   First-name Family-name:
+#     href: https://some.url
+
+# -------------------------------------------------------------------------
+# # If you need custom webpage for reference, modify this section:
+
+# reference:
+# - title: 'Package "..."'
+# - contents:
+#   - has_keyword("package")
+#   - has_keyword("classes")
+# - title: Datasets
+#   desc: "Datasets in package."
+# - contents:
+#   - has_concept("datasets")
+# - title: Plots
+# - subtitle: R base and package "lattice" based plots
+# - contents:
+#   - "plot-methods"
+#   - has_keyword("aplot")
+#   - has_keyword("dplot")
+#   - has_keyword("hplot")
+#   - has_keyword("iplot")
+#   - has_keyword("color")
+# - subtitle: Package "ggplot2" based plots
+# - contents:
+#   - has_concept("ggplot2")
+# - title: Other functions
+# - subtitle: Other active functions
+# - contents:
+#   - lacks_concepts("deprecated")
+# - subtitle: Deprecated and defunct functions
+#   desc: "You should **not** use these functions."
+# - contents:
+#   - has_concept("deprecated", internal = TRUE)
+
+# -------------------------------------------------------------------------
+
+figures:
+  dev: grDevices::png
+  dpi: 96
+  dev.args: []
+  fig.ext: png
+  fig.width: 4.854
+  fig.height: 3
+  fig.retina: 2
+  fig.asp: 1.618
+
+# -------------------------------------------------------------------------

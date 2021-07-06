@@ -1,0 +1,127 @@
+[
+    {
+        "name": "blocked ⛔",
+        "description": "Cannot be started until another issue is resolved",
+        "color": "ff745e"
+    },
+    {
+        "name": "bug 💣",
+        "description": "something is not working as it should",
+        "color": "ee0701"
+    },
+    {
+        "name": "CI 🌵",
+        "description": "Related to continuous integracion (CI), automatic builds and checking.",
+        "color": "efab70"
+    },
+    {
+        "name": "confirmed",
+        "description": "Someone else besides the one who originally described the issue also has this issue.",
+        "color": "b60205"
+    },
+    {
+        "name": "datasets 📅",
+        "description": "Related to datasets in hyperSpec",
+        "color": "edac15"
+    },
+    {
+        "name": "documentation 📘",
+        "description": "Related to hyperSpec's documentation",
+        "color": "000080"
+    },
+    {
+        "name": "duplicate",
+        "description": null,
+        "color": "cccccc"
+    },
+    {
+        "name": "enhancement",
+        "description": "asking for a new feature.",
+        "color": "84b6eb"
+    },
+    {
+        "name": "guideline",
+        "description": null,
+        "color": "57dd4d"
+    },
+    {
+        "name": "help wanted",
+        "description": null,
+        "color": "128A0C"
+    },
+    {
+        "name": "invalid",
+        "description": null,
+        "color": "e6e6e6"
+    },
+    {
+        "name": "IO",
+        "description": "Input and output (read/write) related functions",
+        "color": "8B4513"
+    },
+    {
+        "name": "plots 📈",
+        "description": "related to plotting, graphical display and interaction with graphical display",
+        "color": "a3e07d"
+    },
+    {
+        "name": "poll ⬆️ ⬇️",
+        "description": "A question where everyone can vote",
+        "color": "baa5f7"
+    },
+    {
+        "name": "priority high/urgent",
+        "description": null,
+        "color": "FF0000"
+    },
+    {
+        "name": "priority low",
+        "description": null,
+        "color": "C0ffA0"
+    },
+    {
+        "name": "priority medium",
+        "description": null,
+        "color": "FFC000"
+    },
+    {
+        "name": "proposal 💡",
+        "description": "Proposed ideas for all to consider.",
+        "color": "5319e7"
+    },
+    {
+        "name": "question ❔",
+        "description": "Questions for all to consider.",
+        "color": "800080"
+    },
+    {
+        "name": "ready ✔️",
+        "description": "this issue can be tackled now",
+        "color": "60ff60"
+    },
+    {
+        "name": "style ✏️",
+        "description": "Related to code style (documentation, R scripts, etc.)",
+        "color": "6ce28e"
+    },
+    {
+        "name": "unit test",
+        "description": "Unit tests and code coverage",
+        "color": "ffff00"
+    },
+    {
+        "name": "vignette  📗",
+        "description": "Related to vignettes of hyperSpec",
+        "color": "ffe998"
+    },
+    {
+        "name": "waiting ⏳",
+        "description": "Waiting for response from CRAN, upstream package, etc.",
+        "color": "e0e201"
+    },
+    {
+        "name": "wontfix",
+        "description": "Beyond the scope of the project and thus will no be addressed",
+        "color": "ffffff"
+    }
+]
