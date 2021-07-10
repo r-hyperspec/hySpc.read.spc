@@ -1,4 +1,4 @@
-# SKELETON
+# hySpc.read.spc
 
 ## Acknowledgements
 The `hyperSpec` team gratefully acknowledges support from the Google Summer of Code program, which sponsored student Erick Oduniyi during summer 2020.

@@ -1,11 +1,11 @@
-Package: SKELETON
+Package: hySpc.read.spc
 Type: Package
 Version: 0.0.0.9000
 Title: Package's Title
 Description: Short Description of the package.
 Authors@R: c(
-    person("Claudia",   "Beleites",  role = c("aut"), email = "Claudia.Beleites@chemometrix.gmbh"),
-    person("Erick",     "Oduniyi", role = c("aut","cre"), email = "eeoduniyi@gmail.com"),
+    person("Claudia",   "Beleites", role = c("aut","cre"), email = "Claudia.Beleites@chemometrix.gmbh"),
+    person("Erick",     "Oduniyi", role = c("aut"), email = "eeoduniyi@gmail.com"),
     person("Vilmantas", "Gegzna", role = c("aut")),
     person("Bryan",     "Hanson", role = c("aut"))
     )
@@ -23,8 +23,8 @@ Suggests:
     knitr,
     covr
 URL: 
-    https://r-hyperspec.github.io/hySpc.skeleton,
-    https://github.com/r-hyperspec/hySpc.skeleton
-BugReports: https://github.com/r-hyperspec/hySpc.skeleton/issues
+    https://r-hyperspec.github.io/hySpc.read.spc,
+    https://github.com/r-hyperspec/hySpc.read.spc
+BugReports: https://github.com/r-hyperspec/hySpc.read.spc/issues
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1

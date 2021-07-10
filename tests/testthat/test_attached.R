@@ -1,3 +1,3 @@
 # C. Beleites
 # run all tests attached to objects
-hySpc.testthat::unittest("SKELETON", standalone = FALSE)
+hySpc.testthat::unittest("hySpc.read.spc", standalone = FALSE)
