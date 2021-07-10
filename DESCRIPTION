@@ -1,7 +1,7 @@
 Package: hySpc.read.spc
 Type: Package
 Version: 0.0.0.9000
-Title: Package's Title
+Title: Read Spectra in .spc Format
 Description: Short Description of the package.
 Authors@R: c(
     person("Claudia",   "Beleites", role = c("aut","cre"), email = "Claudia.Beleites@chemometrix.gmbh"),
