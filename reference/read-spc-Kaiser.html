@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>License • hySpc.read.spc</title>
+<title>read Kaiser `.spc` files — read.spc.Kaiser • hySpc.read.spc</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script>
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,15 +33,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
-  <link href="extra.css" rel="stylesheet">
+  <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="License" />
+<meta property="og:title" content="read Kaiser `.spc` files — read.spc.Kaiser" />
+<meta property="og:description" content="Import functions for Kaiser Optical Systems `.spc` files." />
 
 
 
@@ -60,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-title-body">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -72,7 +73,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">hySpc.read.spc</a>
+        <a class="navbar-link" href="../index.html">hySpc.read.spc</a>
         <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9000</span>
       </span>
     </div>
@@ -80,16 +81,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -110,31 +111,72 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>License</h1>
+    <h1>read Kaiser `.spc` files</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-hyperspec/hySpc.read.spc/blob/master/R/read_spc_Kaiser.R'><code>R/read_spc_Kaiser.R</code></a></small>
+    <div class="hidden name"><code>read-spc-Kaiser.Rd</code></div>
     </div>
 
-<pre>
-Copyright 2020- by the hySpc.read.spc authors - see file DESCRIPTION
+    <div class="ref-description">
+    <p>Import functions for Kaiser Optical Systems `.spc` files.</p>
+    </div>
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+    <pre class="usage"><span class='fu'>read.spc.Kaiser</span><span class='op'>(</span><span class='va'>files</span>, <span class='va'>...</span>, glob <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+<span class='fu'>read.spc.KaiserMap</span><span class='op'>(</span><span class='va'>files</span>, keys.log2data <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-</pre>
+<span class='fu'>read.spc.KaiserLowHigh</span><span class='op'>(</span>
+  files <span class='op'>=</span> <span class='kw'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span><span class='op'>(</span><span class='st'>"file names needed"</span><span class='op'>)</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"single"</span>, <span class='st'>"map"</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  glob <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>files</th>
+      <td><p>If `glob = TRUE`, `filename` can contain wildcards.
+Thus all files matching the name pattern in `filename` can be
+specified.</p></td>
+    </tr>
+    <tr>
+      <th>glob</th>
+      <td><p>If `TRUE` the filename is interpreted as a wildcard
+containing file name pattern and expanded to all matching file names.</p></td>
+    </tr>
+    <tr>
+      <th>keys.log2data, ...</th>
+      <td><p>All further arguments are handed over directly to [read.spc()].</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>what kind of measurement was done? If `"map"`, `read.spc.KaiserMap` is used
+instead of `read.spc.Kaiser`.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>hyperSpec</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>`read.spc.Kaiser` imports sets of `.spc` files written by Kaiser Optical Systems' Hologram
+software.  It may also serve as an example how to write wrapper functions for `read.spc` to
+conveniently import specialized sets of `.spc` files.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>## for examples, please see `vignette ("fileio", package = "hyperSpec")`.</span>
+</div></pre>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
-
 
 
       <footer>
