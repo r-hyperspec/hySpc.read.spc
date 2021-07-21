@@ -1012,7 +1012,7 @@ hySpc.testthat::test(read.spc) <- function() {
   #   })
 }
 
-
+            
 .prepare.hdr.df <- function(data, nsubfiles) {
   ## the *type header elements are expressions. They need to be converted to character.
   data <- lapply(data, function(x) {
