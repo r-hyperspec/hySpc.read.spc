@@ -6,3 +6,6 @@ man/*.Rd
 docs/
 NAMESPACE
 docs
+tests/testthat/testthat-problems.rds
+project.Rproj
+*.Rproj
