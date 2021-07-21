@@ -848,13 +848,17 @@ hySpc.testthat::test(read.spc) <- function() {
 
   test_that("old file format -> error", {
 
+  old.spc <- paste0("fileio/spc/", c("CONTOUR.SPC", "DEMO 3D.SPC", "LC DIODE ARRAY.SPC"))
+  wplanes <- "fileio/spc/wplanes.spc"
+  other.spc <- setdiff(Sys.glob("fileio/spc/*.[sS][pP][cC]"), c(old.spc, wplanes))
+
+  test_that("old file format -> error", {
     for (f in old.spc) {
       expect_error(read.spc(f))
     }
   })
 
   test_that("SPC SDK example files", {
-
 
     checksums <- c(
       `fileio/spc/BARBITUATES.SPC` = "f49bbc854c",
@@ -894,17 +898,21 @@ hySpc.testthat::test(read.spc) <- function() {
     expect_error(read.spc(paste0(shimadzu_path,"/F80A20-1.SPC")))
 
     fname <- paste0(shimadzu_path,"/UV-2600_labeled_DNA.spc")
+
     # TODO #102 - implement support for Shimadzu files
     SHIMADZU_SPC_IMPLEMENTED <- F
     if (SHIMADZU_SPC_IMPLEMENTED) {
       # Compare data from SPC file and from CSV file. They should be equal
       spc <- read.spc(fname)
+
+
       expected <- read.txt.long(paste0(fname, ".csv"), sep = ",")
       expect_true(all.equal(spc$spc, expected$spc))
     } else {
       # IF NOT IMPLEMENTED
       # expect_error (read.spc("fileio/spc.Shimadzu/F80A20-1.SPC"), regexp = 'Shimadzu SPC')
       expect_error(read.spc(fname),
+
         regexp = "Support for Shimadzu SPC file format (OLE CF) is not yet implemented",
         fixed = T
       )
@@ -920,6 +928,7 @@ hySpc.testthat::test(read.spc) <- function() {
 
     tmp <- read.spc(paste0(witec_path,"/Witec-Map.spc"))
     expect_known_hash(tmp, "a4ac4f7742")
+
     ## no spatial information
     expect_null(tmp$x)
     expect_null(tmp$y)
@@ -927,6 +936,7 @@ hySpc.testthat::test(read.spc) <- function() {
     ## spectra numbered in z
     tmp <- read.spc(paste0(witec_path,"/Witec-timeseries.spc"))
     expect_known_hash(tmp, "2015492d2d")
+
   })
 
 
@@ -948,12 +958,11 @@ hySpc.testthat::test(read.spc) <- function() {
     hy.setOptions(file.keep.name = TRUE)
     expect_equal(read.spc(paste0(labram_path,"/LabRam-2.spc"))$filename, paste0(labram_path,"/LabRam-2.spc"))
 
+
     hy.setOptions(file.keep.name = file.keep.name)
   })
 
   test_that("option file.remove.emptyspc", {
-    skip("no spc files with empty spectra available so far")
-
     file.remove.emptyspc <- hy.getOption("file.remove.emptyspc")
 
     hy.setOptions(file.remove.emptyspc = FALSE)
@@ -978,8 +987,6 @@ hySpc.testthat::test(read.spc) <- function() {
       )
     )
   })
-
-
   # test_that("log2data", {
   #
   #   expect_equal(
@@ -1093,7 +1100,6 @@ split.line <- function(x, separator, trim.blank = TRUE) {
 
   value
 }
-
 
 # Unit tests -----------------------------------------------------------------
 hySpc.testthat::test(split.string) <- function() {
