@@ -842,16 +842,6 @@ hySpc.testthat::test(read.spc) <- function() {
   witec_path <- system.file("extdata/spc.Witec", package = "hySpc.read.spc")
   labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
 
-  old.spc <- c(paste0(spc_path,"/CONTOUR.SPC"), paste0(spc_path,"/DEMO 3D.SPC"), paste0(spc_path,"/LC DIODE ARRAY.SPC"))
-
-  wplanes <- paste0(spc_path,"/wplanes.spc")
-
-  test_that("old file format -> error", {
-
-  old.spc <- paste0("fileio/spc/", c("CONTOUR.SPC", "DEMO 3D.SPC", "LC DIODE ARRAY.SPC"))
-  wplanes <- "fileio/spc/wplanes.spc"
-  other.spc <- setdiff(Sys.glob("fileio/spc/*.[sS][pP][cC]"), c(old.spc, wplanes))
-
   test_that("old file format -> error", {
     for (f in old.spc) {
       expect_error(read.spc(f))
@@ -1012,7 +1002,7 @@ hySpc.testthat::test(read.spc) <- function() {
   #   })
 }
 
-            
+
 .prepare.hdr.df <- function(data, nsubfiles) {
   ## the *type header elements are expressions. They need to be converted to character.
   data <- lapply(data, function(x) {
