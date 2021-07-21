@@ -2,6 +2,9 @@
 #'
 #' @import hyperSpec
 #' @import hySpc.testthat
+#' @importFrom utils head tail
+#' @importFrom methods new
+#' @importFrom utils str
 
 "_PACKAGE"
 
