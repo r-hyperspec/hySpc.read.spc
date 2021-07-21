@@ -78,8 +78,13 @@ cat(res, sep = '\n')
 ```
 
 
-<!-- This chunk demonstrates  -->
+<!-- This chunk demonstrates  example of read.spc()-->
 
 ```
+kaisermap_path <- system.file("extdata/spc.Kaisermap", package = "hySpc.read.spc")
+hySpc.read.spc::read.spc(paste0(kaisermap_path,"/ebroAVII.spc"), keys.log2data = TRUE)
+
+labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
+hySpc.read.spc::read.spc(paste0(labram_path,"/LabRam-2.spc"))
 
 ```
