@@ -1,0 +1,85 @@
+---
+# For vignette ---------------------------------------------------------------
+title:       'Import and Export Files with SPC files'
+subtitle:    'Tutorial on Spectra File Import from SPC Files for "hyperSpec"'
+description: 'Tutorial on spectra file import from SPC Files for "hyperSpec".'
+# Authors --------------------------------------------------------------------
+author:
+  - name: Sang Truong, Claudia Beleites, Vilmantas Gegzna, Roman Kiselev
+    email: sttruong@stanford.edu
+    corresponding : yes
+    affiliation   : Stanford University
+# Document -------------------------------------------------------------------
+date:        "`r Sys.Date()`"
+output:
+    bookdown::html_document2:
+      base_format: rmarkdown::html_vignette
+      toc: yes
+      toc_depth: 2
+      fig_caption: yes
+      number_sections: true
+      css:
+        - vignette.css
+        - style.css
+vignette: >
+    % \VignetteIndexEntry{Introduction to Package "hySpc.read.spc"}
+    % \VignetteKeyword{hySpc.read.spc}
+    % \VignettePackage{hySpc.read.spc}
+    % \VignetteEngine{knitr::rmarkdown}
+    % \VignetteEncoding{UTF-8}
+# Citations/References -------------------------------------------------------
+link-citations: yes
+bibliography: resources/intro-pkg.bib
+biblio-style: plain
+csl: elsevier-with-titles.csl
+# Pkgdown --------------------------------------------------------------------
+pkgdown:
+  as_is: true
+  set_null_theme: no
+---
+
+
+```{r cleanup-hyperspec, include = FALSE}
+# Clean up to ensure reproducible workspace ----------------------------------
+rm(list = ls(all.names = TRUE))
+```
+
+```{r setup, include = FALSE}
+# Packages -------------------------------------------------------------------
+library(hySpc.read.spc)
+
+# Functions ------------------------------------------------------------------
+source("vignette-functions.R", encoding = "UTF-8")
+
+# Settings -------------------------------------------------------------------
+source("vignette-default-settings.R", encoding = "UTF-8")
+
+# Temporary options ----------------------------------------------------------
+# Change the value of this option in "vignette-default-settings.R"
+show_reviewers_notes = getOption("show_reviewers_notes", TRUE)
+```
+
+
+```{r bib, echo = FALSE, paged.print = FALSE}
+dir.create("resources", showWarnings = FALSE)
+knitr::write_bib(
+  c("hyperSpec"),
+  file = "resources/intro-pkg.bib",
+  prefix = "R_"
+)
+```
+
+
+<!-- This chunk inserts common info about all the vignettes -->
+
+```{r, echo = FALSE, results = "asis"}
+res <- knitr::knit_child("list-of-vignettes.md", quiet = TRUE)
+cat(res, sep = '\n')
+```
+
+
+<!-- This chunk demonstrates  -->
+
+```
+
+```
