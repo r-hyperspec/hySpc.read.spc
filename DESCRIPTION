@@ -2,7 +2,7 @@ Package: hySpc.read.spc
 Type: Package
 Version: 0.0.0.9000
 Title: Package's Title
-Description: Short Description of the package.
+Description: Import Thermo Galactic's .spc file format into an hyperSpec Object
 Authors@R: c(
     person("Claudia",   "Beleites",  role = c("aut"), email = "Claudia.Beleites@chemometrix.gmbh"),
     person("Erick",     "Oduniyi", role = c("aut","cre"), email = "eeoduniyi@gmail.com"),
@@ -31,7 +31,7 @@ BugReports: https://github.com/r-hyperspec/hySpc.read.spc/issues
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Collate: 
-    'demo_function.R'
-    'package.R'
-    'read_spc.R'
-    'unittestdata.R'
+    "package.R"
+    "read_spc.R"
+    "read_spc_Kaiser.R"
+    "read_spc_Shimadzu.R"
