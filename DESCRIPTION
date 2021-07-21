@@ -18,13 +18,23 @@ Additional_repositories:
 Depends:
     hyperSpec
 Imports: 
-    hySpc.testthat
+    hySpc.testthat,
+    utils,
+    methods,
 Suggests:
     knitr,
-    covr
+    covr,
+    rmarkdown,
+    qpdf,
+    bookdown
 URL: 
     https://r-hyperspec.github.io/hySpc.skeleton,
     https://github.com/r-hyperspec/hySpc.skeleton
 BugReports: https://github.com/r-hyperspec/hySpc.skeleton/issues
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
+Collate: 
+    "package.R"
+    "read_spc.R"
+    "read_spc_Kaiser.R"
+    "read_spc_Shimadzu.R"
