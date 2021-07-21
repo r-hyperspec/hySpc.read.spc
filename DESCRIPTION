@@ -1,4 +1,4 @@
-Package: SKELETON
+Package: hySpc.read.spc
 Type: Package
 Version: 0.0.0.9000
 Title: Package's Title
@@ -12,9 +12,6 @@ Authors@R: c(
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyLoad: yes
-LazyData: yes
-Additional_repositories: 
-    https://r-hyperspec.github.io/pkg-repo/
 Depends:
     hyperSpec
 Imports: 
@@ -28,13 +25,13 @@ Suggests:
     qpdf,
     bookdown
 URL: 
-    https://r-hyperspec.github.io/hySpc.skeleton,
-    https://github.com/r-hyperspec/hySpc.skeleton
-BugReports: https://github.com/r-hyperspec/hySpc.skeleton/issues
+    https://r-hyperspec.github.io/hySpc.read.spc,
+    https://github.com/r-hyperspec/hySpc.read.spc
+BugReports: https://github.com/r-hyperspec/hySpc.read.spc/issues
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Collate: 
-    "package.R"
-    "read_spc.R"
-    "read_spc_Kaiser.R"
-    "read_spc_Shimadzu.R"
+    'demo_function.R'
+    'package.R'
+    'read_spc.R'
+    'unittestdata.R'
