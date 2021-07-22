@@ -842,7 +842,7 @@ hySpc.testthat::test(read.spc) <- function() {
   witec_path <- system.file("extdata/spc.Witec", package = "hySpc.read.spc")
   labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
 
-  old.spc <- paste0(spc_path, c("CONTOUR.SPC", "DEMO 3D.SPC", "LC DIODE ARRAY.SPC"))
+  old.spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO 3D.SPC", "/LC DIODE ARRAY.SPC"))
 
   test_that("old file format -> error", {
     for (f in old.spc) {
