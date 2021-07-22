@@ -5,7 +5,7 @@
 #' @importFrom utils head tail
 #' @importFrom methods new
 #' @importFrom utils str
-
+#' @importFrom methods is
 "_PACKAGE"
 
 # The following block is used by usethis to automatically manage
