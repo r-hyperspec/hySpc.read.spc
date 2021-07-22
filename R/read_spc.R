@@ -842,6 +842,8 @@ hySpc.testthat::test(read.spc) <- function() {
   witec_path <- system.file("extdata/spc.Witec", package = "hySpc.read.spc")
   labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
 
+  old.spc <- paste0(spc_path, c("CONTOUR.SPC", "DEMO 3D.SPC", "LC DIODE ARRAY.SPC"))
+
   test_that("old file format -> error", {
     for (f in old.spc) {
       expect_error(read.spc(f))
@@ -879,8 +881,13 @@ hySpc.testthat::test(read.spc) <- function() {
   })
 
   test_that("LabRam spc files", {
-    expect_known_hash(read.spc(paste0(labram_path,"/LabRam-1.spc")), "3d7cd98ac3")
-    expect_known_hash(read.spc(paste0(labram_path,"/LabRam-2.spc")), "e6b4049803")
+    labram1 <- read.spc(paste0(labram_path,"/LabRam-1.spc"))
+    labram2 <- read.spc(paste0(labram_path,"/LabRam-2.spc"))
+    expect_equal(labram1[[2]][[1]], 785)
+    expect_equal(labram1[[1]][[4]], 678)
+
+    expect_equal(labram2[[1]][[69]], 1849)
+    expect_equal(labram2[[1]][[253]], 2563)
   })
 
   test_that("Shimadzu spc files do not yet work", {
@@ -917,7 +924,8 @@ hySpc.testthat::test(read.spc) <- function() {
     expect_error(read.spc(paste0(witec_path, "/P_A32_007_Spec.Data 1.spc")))
 
     tmp <- read.spc(paste0(witec_path,"/Witec-Map.spc"))
-    expect_known_hash(tmp, "a4ac4f7742")
+    expect_equal(tmp[[4]][[179]], 1138)
+    expect_equal(tmp[[5]][[347]], 1019)
 
     ## no spatial information
     expect_null(tmp$x)
@@ -925,7 +933,8 @@ hySpc.testthat::test(read.spc) <- function() {
 
     ## spectra numbered in z
     tmp <- read.spc(paste0(witec_path,"/Witec-timeseries.spc"))
-    expect_known_hash(tmp, "2015492d2d")
+    expect_equal(tmp[[53]][[231]], 1100)
+    expect_equal(tmp[[71]][[739]], 981)
 
   })
 
@@ -952,17 +961,6 @@ hySpc.testthat::test(read.spc) <- function() {
     hy.setOptions(file.keep.name = file.keep.name)
   })
 
-  test_that("option file.remove.emptyspc", {
-    file.remove.emptyspc <- hy.getOption("file.remove.emptyspc")
-
-    hy.setOptions(file.remove.emptyspc = FALSE)
-    expect_equal(nrow(read.spc("")), NA)
-    hy.setOptions(file.remove.emptyspc = TRUE)
-    expect_equal(nrow(read.spc("")), NA)
-
-    hy.setOptions(file.keep.name = file.remove.emptyspc)
-  })
-
   test_that("hdr2data", {
 
     expect_equal(
@@ -977,29 +975,6 @@ hySpc.testthat::test(read.spc) <- function() {
       )
     )
   })
-  # test_that("log2data", {
-  #
-  #   expect_equal(
-  #     length(colnames(read.spc(paste0(kaisermap_path,"/ebroAVII.spc"), keys.log2data = TRUE))), 55
-  #     # c(
-  #     #   "z", "z.end", "Grams_File_Name", "HoloGRAMS_File_Name", "Acquisition_Date_Time",
-  #     #   "Lambda", "Accuracy_Mode", "Dark_subtracted", "Dark_File_Name",
-  #     #   "Auto_New_Dark_Curve", "Background_subtracted", "Background_File_Name",
-  #     #   "Intensity_Corrected", "Intensity_Calibration_Available", "Intensity_Correction_File",
-  #     #   "Intensity_Correction_Threshold", "Intensity_Source_Correction",
-  #     #   "Intensity_Source_Correction_File", "Comment", "Cosmic_Ray_Filtering",
-  #     #   "Total_Cosmic_Count", "Exposure_Length", "Accumulations", "Accumulation_Method",
-  #     #   "Calibration_File", "Comment.1", "Temperature_Status", "Temperature",
-  #     #   "HoloGRAMS_File_Version", "File_Type", "Operator", "Stage_X_Position",
-  #     #   "Stage_Y_Position", "Stage_Z_Position", "AutoFocusUsed", "WLInterval",
-  #     #   "CalInterval", "FFTFillFactor", "FFTApT", "SamplingMethod", "Has_MultiPlex_Laser",
-  #     #   "External_Trigger", "Laser_Wavelength", "Default_Laser_Wavelength",
-  #     #   "Laser_Tracking", "Laser_Block_Active", "Pixel_Fill_minimum",
-  #     #   "Pixel_Fill_maximum", "Binning_Start", "Binning_End", "NumPoints",
-  #     #   "First", "last", "spc", "filename"
-  #     # )
-  #   )
-  #   })
 }
 
 
