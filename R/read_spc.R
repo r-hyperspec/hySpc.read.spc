@@ -842,7 +842,7 @@ hySpc.testthat::test(read.spc) <- function() {
   witec_path <- system.file("extdata/spc.Witec", package = "hySpc.read.spc")
   labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
 
-  old.spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO 3D.SPC", "/LC DIODE ARRAY.SPC"))
+  old.spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO_3D.SPC", "/LC_DIODE_ARRAY.SPC"))
 
   test_that("old file format -> error", {
     for (f in old.spc) {
@@ -920,8 +920,8 @@ hySpc.testthat::test(read.spc) <- function() {
 
   test_that("Witec: some files supported", {
 
-    expect_error(read.spc(paste0(witec_path, "/P_A32_006_Spec.Data 1.spc")))
-    expect_error(read.spc(paste0(witec_path, "/P_A32_007_Spec.Data 1.spc")))
+    expect_error(read.spc(paste0(witec_path, "/P_A32_006_Spec_Data_1.spc")))
+    expect_error(read.spc(paste0(witec_path, "/P_A32_007_Spec_Data_1.spc")))
 
     tmp <- read.spc(paste0(witec_path,"/Witec-Map.spc"))
     expect_equal(tmp[[4]][[179]], 1138)
