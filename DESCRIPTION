@@ -35,3 +35,4 @@ Collate:
     "read_spc.R"
     "read_spc_Kaiser.R"
     "read_spc_Shimadzu.R"
+    "spc_io_postprocess_optional.R"
