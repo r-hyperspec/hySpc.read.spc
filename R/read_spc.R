@@ -1,10 +1,10 @@
-### read.spc - Import Thermo Galactic's .spc file format into an hyperSpec Object
+### read.spc: Import Thermo Galactic's .spc file format into an hyperSpec object
 ###
 ### C. Beleites 2009/11/29
 ###
-#####################################################################################################
+###############################################################################
 
-## Define constants ---------------------------------------------------------------------------------
+## Define constants -----------------------------------------------------------
 
 .nul <- as.raw(0)
 
@@ -14,9 +14,9 @@
 .spc.default.keys.hdr2data <- c("fexper", "fres", "fsource")
 .spc.default.keys.log2data <- FALSE
 
-## axis labeling ------------------------------------------------------------------------------------
+## axis labeling --------------------------------------------------------------
 
-## x-axis units .....................................................................................
+## x-axis units ...............................................................
 .spc.FXTYPE <- c(
   expression(`/`(x, "a. u.")), # 0
   expression(`/`(tilde(nu), cm^-1)),
@@ -63,7 +63,7 @@
   }
 }
 
-## y-axis units .....................................................................................
+## y-axis units ..............................................................
 .spc.FYTYPE <- c(
   expression(`/`(I[Ref], "a. u.")), # -1
   expression(`/`(I, "a. u.")),
@@ -111,7 +111,7 @@
   }
 }
 
-## helper functions ---------------------------------------------------------------------------------
+## helper functions ----------------------------------------------------------
 ### raw.split.nul - rawToChar conversion, splitting at \0
 #' @importFrom utils tail
 raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.collapse = NULL) {
@@ -159,7 +159,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 
 ## file part reading functions ----------------------------------------------------------------------
 
-## read file header .................................................................................
+## read file header ..........................................................
 ##
 ##
 
@@ -356,7 +356,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   hdr
 }
 
-## read sub file header .............................................................................
+## read sub file header ......................................................
 ##
 ## needs header for consistency checks
 ##
@@ -563,7 +563,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 }
 
 
-## read y data ......................................................................................
+## read y data ...............................................................
 ##
 
 .spc.read.y <- function(raw.data, pos, npts, exponent, word) {
@@ -589,7 +589,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   }
 }
 
-## read x data ......................................................................................
+## read x data ...............................................................
 ##
 
 .spc.read.x <- function(raw.data, pos, npts) {
@@ -599,7 +599,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   )
 }
 
-## error .............................................................................................
+## error .....................................................................
 .spc.error <- function(fname, objects, ...) {
   cat("ERROR in read.spc function ", fname, "\n\n")
   for (i in seq_along(objects)) {
@@ -618,17 +618,18 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   ftflgs
 }
 
-#####################################################################################################
+#############################################################################
 
 
-#' Import for Thermo Galactic's `spc` file format.
+#' Import for Thermo Galactic's `spc` file format
 #'
 #' These functions allow to import Thermo Galactic/Grams `.spc` files.
 #'
 #' @param filename The complete file name of the `.spc` file.
-#' @param keys.hdr2data,keys.log2data character vectors with the names of parameters in the `.spc`
-#' file's log block (log2xxx) or header (hdr2xxx) that should go into the extra data (yyy2data) of
-#' the returned hyperSpec object.
+#' @param keys.hdr2data,keys.log2data character vectors with the names of
+#' parameters in the `.spc`
+#' file's log block (log2xxx) or header (hdr2xxx) that should go into the
+#' extra data (yyy2data) of the returned hyperSpec object.
 #'
 #' All header fields specified in the `.spc` file format specification (see
 #'   below) are imported and can be referred to by their de-capitalized names.
@@ -694,7 +695,8 @@ read.spc <- function(filename,
   ## f contains the raw bytes of the file
 
   ## fpos marks the position of the last read byte
-  ## this is the same as the offset from beginning of the file (count 0) in the .spc definition
+  ## this is the same as the offset from beginning of the file (count 0)
+  ## in the .spc definition
 
   f <- readBin(filename, "raw", file.info(filename)$size, 1)
 
@@ -707,7 +709,8 @@ read.spc <- function(filename,
       wavelength <- seq(hdr$ffirst, hdr$flast, length.out = hdr$fnpts)
     } else {
       ## spectra with common unevenly spaced wavelength axis
-      # 	if (! hdr$ftflgs ['TMULTI']) { # also for multifile with common wavelength axis
+      # if (! hdr$ftflgs ['TMULTI']) { # also for multifile with common
+      # wavelength axis
       tmp <- .spc.read.x(f, fpos, hdr$fnpts)
       wavelength <- tmp$x
       fpos <- tmp$.last.read
@@ -715,7 +718,8 @@ read.spc <- function(filename,
     # }
   }
 
-  ## otherwise (TXYXYS set) hdr$fnpts gives offset to subfile directory if that exists
+  ## otherwise (TXYXYS set) hdr$fnpts gives offset to subfile directory if
+  ## that exists
 
   ## obtain labels from file hdr or from parameter
   label <- list(
@@ -744,7 +748,8 @@ read.spc <- function(filename,
 
   data <- c(data, tmp$extra.data, getbynames(hdr, keys.hdr2data))
 
-  ## preallocate spectra matrix or list for multispectra file with separate wavelength axes
+  ## preallocate spectra matrix or list for multispectra file with separate
+  ## wavelength axes
   ## populate extra data
   if (hdr$ftflgs ["TXYXYS"] && hdr$ftflgs ["TMULTI"]) {
     spc <- list()
@@ -939,7 +944,8 @@ hySpc.testthat::test(read.spc) <- function() {
   })
 
 
-  ## Kaiser spc files tested mostly in Kaiser-specific read.spc.Kaiser* unit tests
+  ## Kaiser spc files tested mostly in Kaiser-specific read.spc.Kaiser*
+  ## unit tests
 
 
   # test_that("wplanes", {
@@ -955,7 +961,10 @@ hySpc.testthat::test(read.spc) <- function() {
     hy.setOptions(file.keep.name = FALSE)
     expect_null(read.spc(paste0(labram_path,"/LabRam-2.spc"))$filename)
     hy.setOptions(file.keep.name = TRUE)
-    expect_equal(read.spc(paste0(labram_path,"/LabRam-2.spc"))$filename, paste0(labram_path,"/LabRam-2.spc"))
+    expect_equal(
+      read.spc(paste0(labram_path, "/LabRam-2.spc"))$filename,
+      paste0(labram_path, "/LabRam-2.spc")
+    )
 
 
     hy.setOptions(file.keep.name = file.keep.name)
@@ -979,7 +988,8 @@ hySpc.testthat::test(read.spc) <- function() {
 
 
 .prepare.hdr.df <- function(data, nsubfiles) {
-  ## the *type header elements are expressions. They need to be converted to character.
+  ## the *type header elements are expressions. They need to be converted
+  ## to character.
   data <- lapply(data, function(x) {
     if (mode(x) == "expression") {
       as.character(x)
@@ -988,7 +998,8 @@ hySpc.testthat::test(read.spc) <- function() {
     }
   })
 
-  ## convert vectors to matrix, otherwise the data.frame will contain one  row per element.
+  ## convert vectors to matrix, otherwise the data.frame will contain one
+  ## row per element.
   ## matrices need to be protected during as.data.frame
 
   vector.entries <- which(sapply(data, length) > 1L)
@@ -1007,7 +1018,7 @@ hySpc.testthat::test(read.spc) <- function() {
 }
 
 # Helper functions -----------------------------------------------------------
-### -----------------------------------------------------------------------------
+### --------------------------------------------------------------------------
 ###
 ### split.string - split string at pattern
 ###
@@ -1082,7 +1093,7 @@ hySpc.testthat::test(split.string) <- function() {
 }
 
 
-### -----------------------------------------------------------------------------
+### --------------------------------------------------------------------------
 ###
 ### getbynames - get list elements by name and if no such element exists, NA
 ###
