@@ -43,3 +43,5 @@ README.html
 # Other/Broad
 *.html
 _tmp/
+.Rproj.user
+vignettes/hySpc-read-spc.html
