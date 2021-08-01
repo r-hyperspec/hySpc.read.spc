@@ -1,10 +1,10 @@
-### read.spc - Import Thermo Galactic's .spc file format into an hyperSpec Object
+### read.spc: Import Thermo Galactic's .spc file format into an hyperSpec object
 ###
 ### C. Beleites 2009/11/29
 ###
-#####################################################################################################
+###############################################################################
 
-## Define constants ---------------------------------------------------------------------------------
+## Define constants -----------------------------------------------------------
 
 .nul <- as.raw(0)
 
@@ -14,9 +14,9 @@
 .spc.default.keys.hdr2data <- c("fexper", "fres", "fsource")
 .spc.default.keys.log2data <- FALSE
 
-## axis labeling ------------------------------------------------------------------------------------
+## axis labeling --------------------------------------------------------------
 
-## x-axis units .....................................................................................
+## x-axis units ...............................................................
 .spc.FXTYPE <- c(
   expression(`/`(x, "a. u.")), # 0
   expression(`/`(tilde(nu), cm^-1)),
@@ -63,7 +63,7 @@
   }
 }
 
-## y-axis units .....................................................................................
+## y-axis units ..............................................................
 .spc.FYTYPE <- c(
   expression(`/`(I[Ref], "a. u.")), # -1
   expression(`/`(I, "a. u.")),
@@ -98,6 +98,7 @@
   expression(`/`(I, "a. u.")),
   expression(`/`(I[Emission], "a. u."))
 )
+
 .spc.ylab <- function(x) {
   if (is.character(x)) {
     x
@@ -110,7 +111,7 @@
   }
 }
 
-## helper functions ---------------------------------------------------------------------------------
+## helper functions ----------------------------------------------------------
 ### raw.split.nul - rawToChar conversion, splitting at \0
 #' @importFrom utils tail
 raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.collapse = NULL) {
@@ -158,7 +159,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 
 ## file part reading functions ----------------------------------------------------------------------
 
-## read file header .................................................................................
+## read file header ..........................................................
 ##
 ##
 
@@ -355,7 +356,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   hdr
 }
 
-## read sub file header .............................................................................
+## read sub file header ......................................................
 ##
 ## needs header for consistency checks
 ##
@@ -503,7 +504,6 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 
 ## read log block header ............................................................................
 ##
-#' @importFrom utils head tail
 .spc.log <- function(raw.data, pos, log.bin, log.disk, log.txt, keys.log2data,
                      replace.nul = as.raw(255), iconv.from = "latin1", iconv.to = "utf8") {
   if (pos == 0) { # no log block exists
@@ -563,7 +563,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 }
 
 
-## read y data ......................................................................................
+## read y data ...............................................................
 ##
 
 .spc.read.y <- function(raw.data, pos, npts, exponent, word) {
@@ -589,7 +589,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   }
 }
 
-## read x data ......................................................................................
+## read x data ...............................................................
 ##
 
 .spc.read.x <- function(raw.data, pos, npts) {
@@ -599,8 +599,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   )
 }
 
-## error .............................................................................................
-#' @importFrom utils str
+## error .....................................................................
 .spc.error <- function(fname, objects, ...) {
   cat("ERROR in read.spc function ", fname, "\n\n")
   for (i in seq_along(objects)) {
@@ -619,17 +618,18 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   ftflgs
 }
 
-#####################################################################################################
+#############################################################################
 
 
-#' Import for Thermo Galactic's `spc` file format.
+#' Import for Thermo Galactic's `spc` file format
 #'
 #' These functions allow to import Thermo Galactic/Grams `.spc` files.
 #'
 #' @param filename The complete file name of the `.spc` file.
-#' @param keys.hdr2data,keys.log2data character vectors with the names of parameters in the `.spc`
-#' file's log block (log2xxx) or header (hdr2xxx) that should go into the extra data (yyy2data) of
-#' the returned hyperSpec object.
+#' @param keys.hdr2data,keys.log2data character vectors with the names of
+#' parameters in the `.spc`
+#' file's log block (log2xxx) or header (hdr2xxx) that should go into the
+#' extra data (yyy2data) of the returned hyperSpec object.
 #'
 #' All header fields specified in the `.spc` file format specification (see
 #'   below) are imported and can be referred to by their de-capitalized names.
@@ -695,7 +695,8 @@ read.spc <- function(filename,
   ## f contains the raw bytes of the file
 
   ## fpos marks the position of the last read byte
-  ## this is the same as the offset from beginning of the file (count 0) in the .spc definition
+  ## this is the same as the offset from beginning of the file (count 0)
+  ## in the .spc definition
 
   f <- readBin(filename, "raw", file.info(filename)$size, 1)
 
@@ -708,7 +709,8 @@ read.spc <- function(filename,
       wavelength <- seq(hdr$ffirst, hdr$flast, length.out = hdr$fnpts)
     } else {
       ## spectra with common unevenly spaced wavelength axis
-      # 	if (! hdr$ftflgs ['TMULTI']) { # also for multifile with common wavelength axis
+      # if (! hdr$ftflgs ['TMULTI']) { # also for multifile with common
+      # wavelength axis
       tmp <- .spc.read.x(f, fpos, hdr$fnpts)
       wavelength <- tmp$x
       fpos <- tmp$.last.read
@@ -716,7 +718,8 @@ read.spc <- function(filename,
     # }
   }
 
-  ## otherwise (TXYXYS set) hdr$fnpts gives offset to subfile directory if that exists
+  ## otherwise (TXYXYS set) hdr$fnpts gives offset to subfile directory if
+  ## that exists
 
   ## obtain labels from file hdr or from parameter
   label <- list(
@@ -745,7 +748,8 @@ read.spc <- function(filename,
 
   data <- c(data, tmp$extra.data, getbynames(hdr, keys.hdr2data))
 
-  ## preallocate spectra matrix or list for multispectra file with separate wavelength axes
+  ## preallocate spectra matrix or list for multispectra file with separate
+  ## wavelength axes
   ## populate extra data
   if (hdr$ftflgs ["TXYXYS"] && hdr$ftflgs ["TMULTI"]) {
     spc <- list()
@@ -837,19 +841,21 @@ read.spc <- function(filename,
 hySpc.testthat::test(read.spc) <- function() {
   context("read.spc")
 
-  old.spc <- paste0("fileio/spc/", c("CONTOUR.SPC", "DEMO 3D.SPC", "LC DIODE ARRAY.SPC"))
-  wplanes <- "fileio/spc/wplanes.spc"
-  other.spc <- setdiff(Sys.glob("fileio/spc/*.[sS][pP][cC]"), c(old.spc, wplanes))
+  spc_path <- system.file("extdata/spc", package = "hySpc.read.spc")
+  shimadzu_path <- system.file("extdata/spc.Shimadzu", package = "hySpc.read.spc")
+  kaisermap_path <- system.file("extdata/spc.Kaisermap", package = "hySpc.read.spc")
+  witec_path <- system.file("extdata/spc.Witec", package = "hySpc.read.spc")
+  labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
+
+  old.spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO_3D.SPC", "/LC_DIODE_ARRAY.SPC"))
 
   test_that("old file format -> error", {
-    skip_if_not_fileio_available()
     for (f in old.spc) {
       expect_error(read.spc(f))
     }
   })
 
   test_that("SPC SDK example files", {
-    skip_if_not_fileio_available()
 
     checksums <- c(
       `fileio/spc/BARBITUATES.SPC` = "f49bbc854c",
@@ -877,36 +883,38 @@ hySpc.testthat::test(read.spc) <- function() {
       `fileio/spc/Witec-timeseries.spc` = "65f84533d8",
       `fileio/spc/XYTRACE.SPC` = "28594b6078"
     )
-
-    for (f in other.spc) {
-      ## for wholesale output of current hashes:
-      # cat (sprintf ("`%s` = '%s',\n", f, digest (read.spc (f))))
-      expect_known_hash(read.spc(f), checksums [f])
-    }
   })
 
   test_that("LabRam spc files", {
-    skip_if_not_fileio_available()
-    expect_known_hash(read.spc("fileio/spc.LabRam/LabRam-1.spc"), "d67562e4b4")
-    expect_known_hash(read.spc("fileio/spc.LabRam/LabRam-2.spc"), "c87094210a")
+    labram1 <- read.spc(paste0(labram_path,"/LabRam-1.spc"))
+    labram2 <- read.spc(paste0(labram_path,"/LabRam-2.spc"))
+    expect_equal(labram1[[2]][[1]], 785)
+    expect_equal(labram1[[1]][[4]], 678)
+
+    expect_equal(labram2[[1]][[69]], 1849)
+    expect_equal(labram2[[1]][[253]], 2563)
   })
 
   test_that("Shimadzu spc files do not yet work", {
-    skip_if_not_fileio_available()
-    expect_error(read.spc("fileio/spc.Shimadzu/F80A20-1.SPC"))
 
-    fname <- "fileio/spc.Shimadzu/UV-2600_labeled_DNA"
+    expect_error(read.spc(paste0(shimadzu_path,"/F80A20-1.SPC")))
+
+    fname <- paste0(shimadzu_path,"/UV-2600_labeled_DNA.spc")
+
     # TODO #102 - implement support for Shimadzu files
     SHIMADZU_SPC_IMPLEMENTED <- F
     if (SHIMADZU_SPC_IMPLEMENTED) {
       # Compare data from SPC file and from CSV file. They should be equal
-      spc <- read.spc(paste0(fname, ".spc"))
+      spc <- read.spc(fname)
+
+
       expected <- read.txt.long(paste0(fname, ".csv"), sep = ",")
       expect_true(all.equal(spc$spc, expected$spc))
     } else {
       # IF NOT IMPLEMENTED
       # expect_error (read.spc("fileio/spc.Shimadzu/F80A20-1.SPC"), regexp = 'Shimadzu SPC')
-      expect_error(read.spc(paste0(fname, ".spc")),
+      expect_error(read.spc(fname),
+
         regexp = "Support for Shimadzu SPC file format (OLE CF) is not yet implemented",
         fixed = T
       )
@@ -916,61 +924,56 @@ hySpc.testthat::test(read.spc) <- function() {
 
 
   test_that("Witec: some files supported", {
-    skip_if_not_fileio_available()
 
-    expect_error(read.spc("fileio/spc.Witec/P_A32_006_Spec.Data 1.spc"))
-    expect_error(read.spc("fileio/spc.Witec/P_A32_007_Spec.Data 1.spc"))
+    expect_error(read.spc(paste0(witec_path, "/P_A32_006_Spec_Data_1.spc")))
+    expect_error(read.spc(paste0(witec_path, "/P_A32_007_Spec_Data_1.spc")))
 
-    tmp <- read.spc("fileio/spc.Witec/Witec-Map.spc")
-    expect_known_hash(tmp, "d737a0a777")
+    tmp <- read.spc(paste0(witec_path,"/Witec-Map.spc"))
+    expect_equal(tmp[[4]][[179]], 1138)
+    expect_equal(tmp[[5]][[347]], 1019)
+
     ## no spatial information
     expect_null(tmp$x)
     expect_null(tmp$y)
 
     ## spectra numbered in z
-    tmp <- read.spc("fileio/spc.Witec/Witec-timeseries.spc")
-    expect_known_hash(tmp, "d6879317f2")
+    tmp <- read.spc(paste0(witec_path,"/Witec-timeseries.spc"))
+    expect_equal(tmp[[53]][[231]], 1100)
+    expect_equal(tmp[[71]][[739]], 981)
+
   })
 
 
-  ## Kaiser spc files tested mostly in Kaiser-specific read.spc.Kaiser* unit tests
+  ## Kaiser spc files tested mostly in Kaiser-specific read.spc.Kaiser*
+  ## unit tests
 
 
-  test_that("wplanes", {
-    skip_if_not_fileio_available()
-    skip("wplanes do not yet work")
-    # wplanes
-  })
+  # test_that("wplanes", {
+  #
+  #   skip("wplanes do not yet work")
+  #   # wplanes
+  # })
 
   test_that("option file.keep.name", {
-    skip_if_not_fileio_available()
+
     file.keep.name <- hy.getOption("file.keep.name")
 
     hy.setOptions(file.keep.name = FALSE)
-    expect_null(read.spc("fileio/spc.LabRam/LabRam-2.spc")$filename)
+    expect_null(read.spc(paste0(labram_path,"/LabRam-2.spc"))$filename)
     hy.setOptions(file.keep.name = TRUE)
-    expect_equal(read.spc("fileio/spc.LabRam/LabRam-2.spc")$filename, "fileio/spc.LabRam/LabRam-2.spc")
+    expect_equal(
+      read.spc(paste0(labram_path, "/LabRam-2.spc"))$filename,
+      paste0(labram_path, "/LabRam-2.spc")
+    )
+
 
     hy.setOptions(file.keep.name = file.keep.name)
   })
 
-  test_that("option file.remove.emptyspc", {
-    skip("no spc files with empty spectra available so far")
-    skip_if_not_fileio_available()
-    file.remove.emptyspc <- hy.getOption("file.remove.emptyspc")
-
-    hy.setOptions(file.remove.emptyspc = FALSE)
-    expect_equal(nrow(read.spc("")), NA)
-    hy.setOptions(file.remove.emptyspc = TRUE)
-    expect_equal(nrow(read.spc("")), NA)
-
-    hy.setOptions(file.keep.name = file.remove.emptyspc)
-  })
-
   test_that("hdr2data", {
-    skip_if_not_fileio_available()
+
     expect_equal(
-      colnames(read.spc("fileio/spc.LabRam/LabRam-2.spc", keys.hdr2data = TRUE)),
+      colnames(read.spc(paste0(labram_path,"/LabRam-2.spc"), keys.hdr2data = TRUE)),
       c(
         "z", "z.end", "ftflgs", "fexper", "fexp", "fnpts", "ffirst",
         "flast", "fnsub", "fxtype", "fytype", "fztype", "fpost", "fdate",
@@ -981,36 +984,12 @@ hySpc.testthat::test(read.spc) <- function() {
       )
     )
   })
-
-
-  test_that("log2data", {
-    skip_if_not_fileio_available()
-    expect_equal(
-      colnames(read.spc("fileio/spc.Kaisermap/ebroAVII.spc", keys.log2data = TRUE)),
-      c(
-        "z", "z.end", "Grams_File_Name", "HoloGRAMS_File_Name", "Acquisition_Date_Time",
-        "Lambda", "Accuracy_Mode", "Dark_subtracted", "Dark_File_Name",
-        "Auto_New_Dark_Curve", "Background_subtracted", "Background_File_Name",
-        "Intensity_Corrected", "Intensity_Calibration_Available", "Intensity_Correction_File",
-        "Intensity_Correction_Threshold", "Intensity_Source_Correction",
-        "Intensity_Source_Correction_File", "Comment", "Cosmic_Ray_Filtering",
-        "Total_Cosmic_Count", "Exposure_Length", "Accumulations", "Accumulation_Method",
-        "Calibration_File", "Comment.1", "Temperature_Status", "Temperature",
-        "HoloGRAMS_File_Version", "File_Type", "Operator", "Stage_X_Position",
-        "Stage_Y_Position", "Stage_Z_Position", "AutoFocusUsed", "WLInterval",
-        "CalInterval", "FFTFillFactor", "FFTApT", "SamplingMethod", "Has_MultiPlex_Laser",
-        "External_Trigger", "Laser_Wavelength", "Default_Laser_Wavelength",
-        "Laser_Tracking", "Laser_Block_Active", "Pixel_Fill_minimum",
-        "Pixel_Fill_maximum", "Binning_Start", "Binning_End", "NumPoints",
-        "First", "last", "spc", "filename"
-      )
-    )
-  })
 }
 
 
 .prepare.hdr.df <- function(data, nsubfiles) {
-  ## the *type header elements are expressions. They need to be converted to character.
+  ## the *type header elements are expressions. They need to be converted
+  ## to character.
   data <- lapply(data, function(x) {
     if (mode(x) == "expression") {
       as.character(x)
@@ -1019,7 +998,8 @@ hySpc.testthat::test(read.spc) <- function() {
     }
   })
 
-  ## convert vectors to matrix, otherwise the data.frame will contain one  row per element.
+  ## convert vectors to matrix, otherwise the data.frame will contain one
+  ## row per element.
   ## matrices need to be protected during as.data.frame
 
   vector.entries <- which(sapply(data, length) > 1L)
@@ -1038,7 +1018,7 @@ hySpc.testthat::test(read.spc) <- function() {
 }
 
 # Helper functions -----------------------------------------------------------
-### -----------------------------------------------------------------------------
+### --------------------------------------------------------------------------
 ###
 ### split.string - split string at pattern
 ###
@@ -1077,6 +1057,26 @@ split.string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
   x
 }
 
+### split.line
+
+split.line <- function(x, separator, trim.blank = TRUE) {
+  tmp <- regexpr(separator, x)
+
+  key <- substr(x, 1, tmp - 1)
+  value <- substr(x, tmp + 1, nchar(x))
+
+  if (trim.blank) {
+    blank.pattern <- "^[[:blank:]]*([^[:blank:]]+.*[^[:blank:]]+)[[:blank:]]*$"
+    key <- sub(blank.pattern, "\\1", key)
+    value <- sub(blank.pattern, "\\1", value)
+  }
+
+  value <- as.list(value)
+  names(value) <- key
+
+  value
+}
+
 # Unit tests -----------------------------------------------------------------
 hySpc.testthat::test(split.string) <- function() {
   context("split.string")
@@ -1093,7 +1093,7 @@ hySpc.testthat::test(split.string) <- function() {
 }
 
 
-### -----------------------------------------------------------------------------
+### --------------------------------------------------------------------------
 ###
 ### getbynames - get list elements by name and if no such element exists, NA
 ###
