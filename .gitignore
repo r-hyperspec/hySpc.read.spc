@@ -45,3 +45,4 @@ README.html
 _tmp/
 .Rproj.user
 vignettes/hySpc-read-spc.html
+vignettes/resources/intro-pkg.bib
