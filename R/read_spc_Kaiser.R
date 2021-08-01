@@ -29,19 +29,19 @@ read.spc.Kaiser <- function(files, ..., glob = TRUE) {
     return(new("hyperSpec"))
   }
 
-  f <- files [1]
+  f <- files[1]
 
   spc <- read.spc(f, no.object = TRUE, ...)
 
-  data <- spc$data [rep(1L, length(files)), , drop = FALSE]
+  data <- spc$data[rep(1L, length(files)), , drop = FALSE]
 
-  spc$spc <- spc$spc  [rep(1L, length(files)), , drop = FALSE]
+  spc$spc <- spc$spc[rep(1L, length(files)), , drop = FALSE]
 
   for (f in seq_along(files)) {
-    tmp <- read.spc(files [f], no.object = TRUE, ...)
+    tmp <- read.spc(files[f], no.object = TRUE, ...)
 
-    data [f, ] <- tmp$data
-    spc$spc  [f, ] <- tmp$spc
+    data[f, ] <- tmp$data
+    spc$spc[f, ] <- tmp$spc
   }
 
   data$filename <- files
@@ -67,7 +67,7 @@ read.spc.KaiserMap <- function(files, keys.log2data = NULL, ...) {
 
   spc <- read.spc.Kaiser(files, keys.log2data = keys.log2data, ...)
 
-  spc@data <- spc@data [, !colnames(spc@data) %in% c("z", "z.end"), drop = FALSE]
+  spc@data <- spc@data[, !colnames(spc@data) %in% c("z", "z.end"), drop = FALSE]
 
   colnames(spc@data) <- gsub("Stage_(.)_Position", "\\L\\1", colnames(spc@data), perl = TRUE)
   for (cln in c("x", "y", "z")) {
@@ -105,12 +105,12 @@ read.spc.KaiserLowHigh <- function(files = stop("file names needed"),
   type <- match.arg(type)
   switch(type,
     single = cbind(
-      read.spc.Kaiser(files [1, ], ..., glob = FALSE),
-      read.spc.Kaiser(files [2, ], ..., glob = FALSE)
+      read.spc.Kaiser(files[1, ], ..., glob = FALSE),
+      read.spc.Kaiser(files[2, ], ..., glob = FALSE)
     ),
     map = cbind(
-      read.spc.KaiserMap(files [1, ], ..., glob = FALSE),
-      read.spc.KaiserMap(files [2, ], ..., glob = FALSE)
+      read.spc.KaiserMap(files[1, ], ..., glob = FALSE),
+      read.spc.KaiserMap(files[2, ], ..., glob = FALSE)
     )
   )
 }
