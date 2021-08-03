@@ -146,7 +146,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
       message("multiple strings encountered in spc file ", paste(out, collapse = ", "), ": using only the first one.")
       out <- out[1]
     } else if (!is.null(paste.collapse)) {
-      if (hy.getOption("debuglevel") > 2L) {
+      if (hy_get_option("debuglevel") > 2L) {
         message("multiple strings encountered in spc file ", paste(out, collapse = ", "), " => pasting.")
       }
 
@@ -309,7 +309,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   if (hdr$ftflgs["TMULTI"]) {
     ## multiple spectra in file
     if (hdr$fnsub <= 1) {
-      if (hy.getOption("debuglevel") >= 2L) {
+      if (hy_get_option("debuglevel") >= 2L) {
         message("spc file header specifies multiple spectra but only zero or one subfile.")
       }
     }
@@ -950,18 +950,18 @@ hySpc.testthat::test(read.spc) <- function() {
   # })
 
   test_that("option file.keep.name", {
-    file.keep.name <- hy.getOption("file.keep.name")
+    file.keep.name <- hy_get_option("file.keep.name")
 
-    hy.setOptions(file.keep.name = FALSE)
+    hy_set_options(file.keep.name = FALSE)
     expect_null(read.spc(paste0(labram_path, "/LabRam-2.spc"))$filename)
-    hy.setOptions(file.keep.name = TRUE)
+    hy_set_options(file.keep.name = TRUE)
     expect_equal(
       read.spc(paste0(labram_path, "/LabRam-2.spc"))$filename,
       paste0(labram_path, "/LabRam-2.spc")
     )
 
 
-    hy.setOptions(file.keep.name = file.keep.name)
+    hy_set_options(file.keep.name = file.keep.name)
   })
 
   test_that("hdr2data", {
