@@ -13,7 +13,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyLoad: yes
 Depends:
-    hyperSpec
+    hyperSpec (0.100.0.9001)
 Imports: 
     hySpc.testthat,
     utils,
