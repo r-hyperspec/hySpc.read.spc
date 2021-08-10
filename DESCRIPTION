@@ -24,6 +24,8 @@ Suggests:
     rmarkdown,
     qpdf,
     bookdown
+Additional_repositories: 
+    https://r-hyperspec.github.io/pkg-repo/
 URL: 
     https://r-hyperspec.github.io/hySpc.read.spc,
     https://github.com/r-hyperspec/hySpc.read.spc
