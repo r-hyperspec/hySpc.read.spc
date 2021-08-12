@@ -13,7 +13,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyLoad: yes
 Depends:
-    hyperSpec (>= 0.100.0.9001)
+    hyperSpec (>= 0.100.0.9000)
 Imports: 
     hySpc.testthat,
     utils,
@@ -24,6 +24,8 @@ Suggests:
     rmarkdown,
     qpdf,
     bookdown
+Additional_repositories: 
+    https://r-hyperspec.github.io/pkg-repo/
 URL: 
     https://r-hyperspec.github.io/hySpc.read.spc,
     https://github.com/r-hyperspec/hySpc.read.spc
