@@ -17,8 +17,8 @@
 <br>
 <center>
 <font color="red" size=4>
-<b>This package is under overhaul now.</b>  
-So this website is still under construction and the contents as well as resources are not fully updated yet.  
+<b>This package is still under construction.</b>  
+So this website is not fully updated yet.  
 </font>
 </center>
 <br>
@@ -46,10 +46,13 @@ The documentation of the other **`r-hyperspec`** family packages can be found at
 
 ## Issues, Bug Reports and Feature Requests
 
-Issues, bug reports and feature requests should go to appopriate package: 
--  are related to this package  [here](https://github.com/r-hyperspec/hyperSpec/issues)!
--  are related to `hyperSpec` package  [here](https://github.com/r-hyperspec/hySpc.read.spc/issues)!
+Issues, bug reports and feature requests should go to an appopriate package's repository:
+
+- if related to this package [(link)](https://github.com/r-hyperspec/hySpc.read.spc/issues);
+- if related to `hyperSpec` package [(link)](https://github.com/r-hyperspec/hyperSpec/issues).
 <!-- ---------------------------------------------------------------------- -->
+
+<!--
 
 ## Installation of Released Version
 
@@ -57,7 +60,7 @@ Issues, bug reports and feature requests should go to appopriate package:
 
 > **NOTE:** this package is not relesed yet!
 
-<!--
+
 You can install the released version of **hySpc.read.spc** from [CRAN](https://cran.r-project.org/package=hySpc.read.spc) with:
 
 ```r
