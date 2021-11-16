@@ -11,37 +11,75 @@
 <!-- badges: end -->
 
 
-
 # R Package **hySpc.read.spc**
 
-[**R**](https://www.r-project.org/) package **hySpc.read.spc** is a member of the [**`r-hyperspec`**](https://r-hyperspec.github.io/) packages family, which ...
-**WRITE THE PURPOSE OF THIS PACKAGE**  
-
 <!-- ---------------------------------------------------------------------- -->
+<br>
+<center>
+<font color="red" size=4>
+<b>This package is under overhaul now.</b>  
+So this website is still under construction and the contents as well as resources are not fully updated yet.  
+</font>
+</center>
+<br>
+<!-- ---------------------------------------------------------------------- -->
+
+
+[**R**](https://www.r-project.org/) package **hySpc.read.spc** is a member of the [**`r-hyperspec`**](https://r-hyperspec.github.io/) packages family, which purpose is to import Thermo Galactic's `.spc` file format into a hyperSpec object.
+
+
 
 ## Documentation
 
+https://r-hyperspec.github.io/hySpc.read.spc
+
+<!--
 There are two versions of **hySpc.read.spc** online documentation:
 
 a. for the [released version](https://r-hyperspec.github.io/hySpc.read.spc/) of package,  
 b. for the [development version](https://r-hyperspec.github.io/hySpc.read.spc/dev/) of package.
+-->
 
 The documentation of the other **`r-hyperspec`** family packages can be found at [r-hyperspec.github.io](https://r-hyperspec.github.io/).
 
 <!-- ---------------------------------------------------------------------- -->
 
-## Installation
+## Issues, Bug Reports and Feature Requests
+
+Issues, bug reports and feature requests should go to appopriate package: 
+-  are related to this package  [here](https://github.com/r-hyperspec/hyperSpec/issues)!
+-  are related to `hyperSpec` package  [here](https://github.com/r-hyperspec/hySpc.read.spc/issues)!
+<!-- ---------------------------------------------------------------------- -->
+
+## Installation of Released Version
 
 ### Install from CRAN
 
+> **NOTE:** this package is not relesed yet!
+
+<!--
 You can install the released version of **hySpc.read.spc** from [CRAN](https://cran.r-project.org/package=hySpc.read.spc) with:
 
 ```r
 install.packages("hySpc.read.spc")
 ```
+-->
 
+## Installation of In-Development Version
+
+### Install from CRAN-like Repository
+
+The recommended way to install the in-development version:
+
+```r
+repos <- c("https://r-hyperspec.github.io/pkg-repo/", getOption("repos"))
+install.packages("hySpc.read.spc", repos = repos)
+```
 
 ### Install from GitHub
+
+<details>
+<summary>Install from GitHub (details)</summary>
 
 You can install the development version of the package from [GitHub](https://github.com/r-hyperspec/hySpc.read.spc):
 
@@ -57,8 +95,14 @@ Usually, "Windows" users need to download, install and properly configure **Rtoo
 This method will **not** install package's documentation (help pages and vignettes) into your computer.
 So you can either use the [online documentation](https://r-hyperspec.github.io/) or build the package from source (see the next section).
 
+</details>
+
+
 
 ### Install from Source
+
+<details>
+<summary>Install from Source (details)</summary>
 
 1. From the **hySpc.read.spc**'s GitHub [repository](https://github.com/r-hyperspec/hySpc.read.spc):
     - If you use Git, `git clone` the branch of interest.
@@ -95,3 +139,5 @@ devtools::install(build_vignettes = TRUE)
 
 **NOTE 1:**
 Usually, "Windows" users need to download, install and properly configure **Rtools** (see [these instructions](https://cran.r-project.org/bin/windows/Rtools/)) to make the code above work.
+
+</details>
