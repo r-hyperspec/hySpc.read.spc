@@ -11,8 +11,9 @@
 <!-- badges: end -->
 
 
-# R Package **hySpc.read.spc**
 
+<!-- ---------------------------------------------------------------------- -->
+# R Package **hySpc.read.spc**
 <!-- ---------------------------------------------------------------------- -->
 <br>
 <center>
@@ -24,10 +25,10 @@ So this website is not fully updated yet.
 <br>
 <!-- ---------------------------------------------------------------------- -->
 
+[**R**](https://www.r-project.org/) package **hySpc.read.spc** is a member of the [**`r-hyperspec`**](https://r-hyperspec.github.io/) packages family, the purpose of which is to import Thermo Galactic's `.spc` file format into a hyperSpec object.
 
-[**R**](https://www.r-project.org/) package **hySpc.read.spc** is a member of the [**`r-hyperspec`**](https://r-hyperspec.github.io/) packages family, which purpose is to import Thermo Galactic's `.spc` file format into a hyperSpec object.
 
-
+<!-- ---------------------------------------------------------------------- -->
 
 ## Documentation
 
@@ -48,14 +49,14 @@ The documentation of the other **`r-hyperspec`** family packages can be found at
 
 Issues, bug reports and feature requests should go to an appopriate package's repository:
 
-- if related to this package [(link)](https://github.com/r-hyperspec/hySpc.read.spc/issues);
-- if related to `hyperSpec` package [(link)](https://github.com/r-hyperspec/hyperSpec/issues).
+- if related to this package, use this [link](https://github.com/r-hyperspec/hySpc.read.spc/issues);
+- if related to `hyperSpec` package, use this [link](https://github.com/r-hyperspec/hyperSpec/issues).
 <!-- ---------------------------------------------------------------------- -->
 
+
+## Installation
+
 <!--
-
-## Installation of Released Version
-
 ### Install from CRAN
 
 > **NOTE:** this package is not relesed yet!
@@ -68,23 +69,23 @@ install.packages("hySpc.read.spc")
 ```
 -->
 
-## Installation of In-Development Version
 
 ### Install from CRAN-like Repository
 
-The recommended way to install the in-development version:
+The **recommended** way to install the in-development version:
 
 ```r
 repos <- c("https://r-hyperspec.github.io/pkg-repo/", getOption("repos"))
 install.packages("hySpc.read.spc", repos = repos)
 ```
 
+
 ### Install from GitHub
 
 <details>
 <summary>Install from GitHub (details)</summary>
 
-You can install the development version of the package from [GitHub](https://github.com/r-hyperspec/hySpc.read.spc):
+You can install the in-development version of the package from [GitHub](https://github.com/r-hyperspec/hySpc.read.spc) too:
 
 ```r
 if (!require(remotes)) {install.packages("remotes")}
