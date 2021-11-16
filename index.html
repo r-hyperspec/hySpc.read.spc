@@ -79,40 +79,78 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#r-package-hyspcreadspc" class="anchor"></a>R Package <strong>hySpc.read.spc</strong>
 </h1></div>
-<p><a href="https://www.r-project.org/"><strong>R</strong></a> package <strong>hySpc.read.spc</strong> is a member of the <a href="https://r-hyperspec.github.io/"><strong><code>r-hyperspec</code></strong></a> packages family, which … <strong>WRITE THE PURPOSE OF THIS PACKAGE</strong></p>
 <!-- ---------------------------------------------------------------------- -->
+<br><center>
+<font color="red" size="4"> <b>This package is still under construction.</b><br>
+So this website is not fully updated yet.<br></font>
+</center>
+<p><br><!-- ---------------------------------------------------------------------- --></p>
+<p><a href="https://www.r-project.org/"><strong>R</strong></a> package <strong>hySpc.read.spc</strong> is a member of the <a href="https://r-hyperspec.github.io/"><strong><code>r-hyperspec</code></strong></a> packages family, which purpose is to import Thermo Galactic’s <code>.spc</code> file format into a hyperSpec object.</p>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>There are two versions of <strong>hySpc.read.spc</strong> online documentation:</p>
-<p>a. for the <a href="https://r-hyperspec.github.io/hySpc.read.spc/">released version</a> of package,</p>
-<p>b. for the <a href="https://r-hyperspec.github.io/hySpc.read.spc/dev/">development version</a> of package.</p>
+<p><a href="https://r-hyperspec.github.io/hySpc.read.spc" class="uri">https://r-hyperspec.github.io/hySpc.read.spc</a></p>
+<!--
+There are two versions of **hySpc.read.spc** online documentation:
+
+a. for the [released version](https://r-hyperspec.github.io/hySpc.read.spc/) of package,  
+b. for the [development version](https://r-hyperspec.github.io/hySpc.read.spc/dev/) of package.
+-->
 <p>The documentation of the other <strong><code>r-hyperspec</code></strong> family packages can be found at <a href="https://r-hyperspec.github.io/">r-hyperspec.github.io</a>.</p>
 <!-- ---------------------------------------------------------------------- -->
 </div>
-<div id="installation" class="section level2">
+<div id="issues-bug-reports-and-feature-requests" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div id="install-from-cran" class="section level3">
+<a href="#issues-bug-reports-and-feature-requests" class="anchor"></a>Issues, Bug Reports and Feature Requests</h2>
+<p>Issues, bug reports and feature requests should go to an appopriate package’s repository:</p>
+<ul>
+<li>if related to this package <a href="https://github.com/r-hyperspec/hySpc.read.spc/issues">(link)</a>;</li>
+<li>if related to <code>hyperSpec</code> package <a href="https://github.com/r-hyperspec/hyperSpec/issues">(link)</a>. <!-- ---------------------------------------------------------------------- -->
+</li>
+</ul>
+<!--
+
+## Installation of Released Version
+
+### Install from CRAN
+
+> **NOTE:** this package is not relesed yet!
+
+
+You can install the released version of **hySpc.read.spc** from [CRAN](https://cran.r-project.org/package=hySpc.read.spc) with:
+
+```r
+install.packages("hySpc.read.spc")
+```
+-->
+</div>
+<div id="installation-of-in-development-version" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation-of-in-development-version" class="anchor"></a>Installation of In-Development Version</h2>
+<div id="install-from-cran-like-repository" class="section level3">
 <h3 class="hasAnchor">
-<a href="#install-from-cran" class="anchor"></a>Install from CRAN</h3>
-<p>You can install the released version of <strong>hySpc.read.spc</strong> from <a href="https://cran.r-project.org/package=hySpc.read.spc">CRAN</a> with:</p>
+<a href="#install-from-cran-like-repository" class="anchor"></a>Install from CRAN-like Repository</h3>
+<p>The recommended way to install the in-development version:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"hySpc.read.spc"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">repos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://r-hyperspec.github.io/pkg-repo/"</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"hySpc.read.spc"</span>, repos <span class="op">=</span> <span class="va">repos</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="install-from-github" class="section level3">
 <h3 class="hasAnchor">
 <a href="#install-from-github" class="anchor"></a>Install from GitHub</h3>
+<details><p><summary>Install from GitHub (details)</summary></p>
 <p>You can install the development version of the package from <a href="https://github.com/r-hyperspec/hySpc.read.spc">GitHub</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org">remotes</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span><span class="op">}</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"r-hyperspec/hySpc.read.spc"</span><span class="op">)</span></code></pre></div>
 <p><strong>NOTE 1:</strong> Usually, “Windows” users need to download, install and properly configure <strong>Rtools</strong> (see <a href="https://cran.r-project.org/bin/windows/Rtools/">these instructions</a>) to make the code above work.</p>
 <p><strong>NOTE 2:</strong> This method will <strong>not</strong> install package’s documentation (help pages and vignettes) into your computer. So you can either use the <a href="https://r-hyperspec.github.io/">online documentation</a> or build the package from source (see the next section).</p>
+</details>
 </div>
 <div id="install-from-source" class="section level3">
 <h3 class="hasAnchor">
 <a href="#install-from-source" class="anchor"></a>Install from Source</h3>
+<details><p><summary>Install from Source (details)</summary></p>
 <ol>
 <li>From the <strong>hySpc.read.spc</strong>’s GitHub <a href="https://github.com/r-hyperspec/hySpc.read.spc">repository</a>:
 <ul>
@@ -149,6 +187,7 @@ d. Install package <strong>hySpc.read.spc</strong>.</li>
 <span class="co"># Install package hySpc.read.spc</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/install.html">install</a></span><span class="op">(</span>build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><strong>NOTE 1:</strong> Usually, “Windows” users need to download, install and properly configure <strong>Rtools</strong> (see <a href="https://cran.r-project.org/bin/windows/Rtools/">these instructions</a>) to make the code above work.</p>
+</details>
 </div>
 </div>
 </div>
