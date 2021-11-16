@@ -17,6 +17,7 @@
 *.DS_Store
 
 # RStudio files
+.Rproj.user
 *.Rproj.user
 *.Rproj
 
@@ -43,7 +44,3 @@ README.html
 # Other/Broad
 *.html
 _tmp/
-.Rproj.user
-vignettes/hySpc-read-spc.html
-vignettes/resources/intro-pkg.bib
-vignettes/hySpc-read-spc.R
