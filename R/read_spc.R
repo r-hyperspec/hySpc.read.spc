@@ -166,7 +166,7 @@
 ##
 
 #' @importFrom utils maintainer
-.spc_filehdr <- function(raw_data) {
+.spc_file_hdr <- function(raw_data) {
   ## check file format
 
   ## Detect Shimadzu SPC (which is effectively a variant of OLE CF format)
@@ -703,7 +703,7 @@ read_spc <- function(filename,
 
   f <- readBin(filename, "raw", file.info(filename)$size, 1)
 
-  hdr <- modifyList(.spc_filehdr(f), hdr)
+  hdr <- modifyList(.spc_file_hdr(f), hdr)
   fpos <- hdr$.last.read
 
   if (!hdr$ftflgs["TXYXYS"]) {
