@@ -673,15 +673,15 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 #' ## get the sample .spc files from ftirsearch.com (see above)
 #' \dontrun{
 #' # single spectrum
-#' spc <- read.spc("BENZENE.SPC")
+#' spc <- read_spc("BENZENE.SPC")
 #' plot(spc)
 #'
 #' # multi-spectra .spc file with common wavelength axis
-#' spc <- read.spc("IG_MULTI.SPC")
+#' spc <- read_spc("IG_MULTI.SPC")
 #' spc
 #'
 #' # multi-spectra .spc file with individual wavelength axes
-#' spc <- read.spc("BARBITUATES.SPC")
+#' spc <- read_spc("BARBITUATES.SPC")
 #' plot(spc[[1]], lines.args = list(type = "h"))
 #' }
 #'
@@ -851,7 +851,7 @@ hySpc.testthat::test(read.spc) <- function() {
 
   test_that("old file format -> error", {
     for (f in old.spc) {
-      expect_error(read.spc(f))
+      expect_error(read_spc(f))
     }
   })
 
@@ -885,8 +885,8 @@ hySpc.testthat::test(read.spc) <- function() {
   })
 
   test_that("LabRam spc files", {
-    labram1 <- read.spc(paste0(labram_path, "/LabRam-1.spc"))
-    labram2 <- read.spc(paste0(labram_path, "/LabRam-2.spc"))
+    labram1 <- read_spc(paste0(labram_path, "/LabRam-1.spc"))
+    labram2 <- read_spc(paste0(labram_path, "/LabRam-2.spc"))
     expect_equal(labram1[[2]][[1]], 785)
     expect_equal(labram1[[1]][[4]], 678)
 
@@ -895,7 +895,7 @@ hySpc.testthat::test(read.spc) <- function() {
   })
 
   test_that("Shimadzu spc files do not yet work", {
-    expect_error(read.spc(paste0(shimadzu_path, "/F80A20-1.SPC")))
+    expect_error(read_spc(paste0(shimadzu_path, "/F80A20-1.SPC")))
 
     fname <- paste0(shimadzu_path, "/UV-2600_labeled_DNA.spc")
 
@@ -903,15 +903,15 @@ hySpc.testthat::test(read.spc) <- function() {
     SHIMADZU_SPC_IMPLEMENTED <- F
     if (SHIMADZU_SPC_IMPLEMENTED) {
       # Compare data from SPC file and from CSV file. They should be equal
-      spc <- read.spc(fname)
+      spc <- read_spc(fname)
 
 
       expected <- read.txt.long(paste0(fname, ".csv"), sep = ",")
       expect_true(all.equal(spc$spc, expected$spc))
     } else {
       # IF NOT IMPLEMENTED
-      # expect_error (read.spc("fileio/spc.Shimadzu/F80A20-1.SPC"), regexp = 'Shimadzu SPC')
-      expect_error(read.spc(fname),
+      # expect_error (read_spc("fileio/spc.Shimadzu/F80A20-1.SPC"), regexp = 'Shimadzu SPC')
+      expect_error(read_spc(fname),
         regexp = "Support for Shimadzu SPC file format (OLE CF) is not yet implemented",
         fixed = T
       )
@@ -921,10 +921,10 @@ hySpc.testthat::test(read.spc) <- function() {
 
 
   test_that("Witec: some files supported", {
-    expect_error(read.spc(paste0(witec_path, "/P_A32_006_Spec_Data_1.spc")))
-    expect_error(read.spc(paste0(witec_path, "/P_A32_007_Spec_Data_1.spc")))
+    expect_error(read_spc(paste0(witec_path, "/P_A32_006_Spec_Data_1.spc")))
+    expect_error(read_spc(paste0(witec_path, "/P_A32_007_Spec_Data_1.spc")))
 
-    tmp <- read.spc(paste0(witec_path, "/Witec-Map.spc"))
+    tmp <- read_spc(paste0(witec_path, "/Witec-Map.spc"))
     expect_equal(tmp[[4]][[179]], 1138)
     expect_equal(tmp[[5]][[347]], 1019)
 
@@ -933,7 +933,7 @@ hySpc.testthat::test(read.spc) <- function() {
     expect_null(tmp$y)
 
     ## spectra numbered in z
-    tmp <- read.spc(paste0(witec_path, "/Witec-timeseries.spc"))
+    tmp <- read_spc(paste0(witec_path, "/Witec-timeseries.spc"))
     expect_equal(tmp[[53]][[231]], 1100)
     expect_equal(tmp[[71]][[739]], 981)
   })
@@ -953,10 +953,10 @@ hySpc.testthat::test(read.spc) <- function() {
     file.keep.name <- hy_get_option("file.keep.name")
 
     hy_set_options(file.keep.name = FALSE)
-    expect_null(read.spc(paste0(labram_path, "/LabRam-2.spc"))$filename)
+    expect_null(read_spc(paste0(labram_path, "/LabRam-2.spc"))$filename)
     hy_set_options(file.keep.name = TRUE)
     expect_equal(
-      read.spc(paste0(labram_path, "/LabRam-2.spc"))$filename,
+      read_spc(paste0(labram_path, "/LabRam-2.spc"))$filename,
       paste0(labram_path, "/LabRam-2.spc")
     )
 
@@ -966,7 +966,7 @@ hySpc.testthat::test(read.spc) <- function() {
 
   test_that("hdr2data", {
     expect_equal(
-      colnames(read.spc(paste0(labram_path, "/LabRam-2.spc"), keys.hdr2data = TRUE)),
+      colnames(read_spc(paste0(labram_path, "/LabRam-2.spc"), keys.hdr2data = TRUE)),
       c(
         "z", "z.end", "ftflgs", "fexper", "fexp", "fnpts", "ffirst",
         "flast", "fnsub", "fxtype", "fytype", "fztype", "fpost", "fdate",
