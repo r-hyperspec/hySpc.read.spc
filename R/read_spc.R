@@ -885,6 +885,9 @@ hySpc.testthat::test(read_spc) <- function() {
       `fileio/spc/Witec-timeseries.spc` = "65f84533d8",
       `fileio/spc/XYTRACE.SPC` = "28594b6078"
     )
+
+    # FIXME: unit test is missing
+
   })
 
   test_that("LabRam spc files", {
