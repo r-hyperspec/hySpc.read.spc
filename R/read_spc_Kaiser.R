@@ -15,7 +15,7 @@
 #'   specified.
 #' @param glob If `TRUE` the filename is interpreted as a wildcard
 #'   containing file name pattern and expanded to all matching file names.
-#' @param keys.log2data,... All further arguments are handed over directly to [read_spc()].
+#' @param keys_log2data,... All further arguments are handed over directly to [read_spc()].
 #' @return hyperSpec
 #' @examples
 #' ## for examples, please see `vignette ("fileio", package = "hyperSpec")`.
@@ -62,10 +62,10 @@ read_spc_Kaiser <- function(files, ..., glob = TRUE) {
 #'
 #' @concept io
 #'
-read_spc_KaiserMap <- function(files, keys.log2data = NULL, ...) {
-  keys.log2data <- c("Stage_X_Position", "Stage_Y_Position", "Stage_Z_Position", keys.log2data)
+read_spc_KaiserMap <- function(files, keys_log2data = NULL, ...) {
+  keys_log2data <- c("Stage_X_Position", "Stage_Y_Position", "Stage_Z_Position", keys_log2data)
 
-  spc <- read_spc_Kaiser(files, keys.log2data = keys.log2data, ...)
+  spc <- read_spc_Kaiser(files, keys_log2data = keys_log2data, ...)
 
   spc@data <- spc@data[, !colnames(spc@data) %in% c("z", "z.end"), drop = FALSE]
 

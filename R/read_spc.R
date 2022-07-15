@@ -10,15 +10,15 @@
 .nul <- as.raw(0)
 
 ## header sizes
-.spc.size <- c(hdr = 512, subhdr = 32, subfiledir = 12, loghdr = 64)
+.spc_size <- c(hdr = 512, subhdr = 32, subfiledir = 12, loghdr = 64)
 
-.spc.default.keys.hdr2data <- c("fexper", "fres", "fsource")
-.spc.default.keys.log2data <- FALSE
+.spc_default_keys_hdr2data <- c("fexper", "fres", "fsource")
+.spc_default_keys_log2data <- FALSE
 
 ## axis labeling --------------------------------------------------------------
 
 ## x-axis units ...............................................................
-.spc.FXTYPE <- c(
+.spc_FXTYPE <- c(
   expression(`/`(x, "a. u.")), # 0
   expression(`/`(tilde(nu), cm^-1)),
   expression(`/`(lambda, (mu * m))),
@@ -52,11 +52,11 @@
   expression(`/`(t, h)) # 30
 )
 
-.spc.xlab <- function(x) {
+.spc_xlab <- function(x) {
   if (is.character(x)) {
     x
-  } else if (x <= length(.spc.FXTYPE) + 1) {
-    .spc.FXTYPE[x + 1]
+  } else if (x <= length(.spc_FXTYPE) + 1) {
+    .spc_FXTYPE[x + 1]
   } else {
     ## x = 255 is for double interferogram and supposed not to have a label.
     ## Thus, returning NA is appropriate
@@ -65,7 +65,7 @@
 }
 
 ## y-axis units ..............................................................
-.spc.FYTYPE <- c(
+.spc_FYTYPE <- c(
   expression(`/`(I[Ref], "a. u.")), # -1
   expression(`/`(I, "a. u.")),
   expression(`/`(I[IGRM], "a. u.")),
@@ -100,13 +100,13 @@
   expression(`/`(I[Emission], "a. u."))
 )
 
-.spc.ylab <- function(x) {
+.spc_ylab <- function(x) {
   if (is.character(x)) {
     x
   } else if (x <= 26) {
-    .spc.FYTYPE[x + 2]
+    .spc_FYTYPE[x + 2]
   } else if (x %in% 128:131) {
-    .spc.FYTYPE[x - 99]
+    .spc_FYTYPE[x - 99]
   } else {
     NA
   }
@@ -115,8 +115,9 @@
 ## helper functions ----------------------------------------------------------
 ### raw.split.nul - rawToChar conversion, splitting at \0
 #' @importFrom utils tail
-raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.collapse = NULL) {
-  # todo make better truncation
+raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
+                          paste.collapse = NULL) {
+  # TODO make better truncation
   trunc <- rep(trunc, length.out = 2)
 
   if (trunc[1] && raw[1] == .nul) {
@@ -165,7 +166,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ##
 
 #' @importFrom utils maintainer
-.spc.filehdr <- function(raw.data) {
+.spc_filehdr <- function(raw.data) {
   ## check file format
 
   ## Detect Shimadzu SPC (which is effectively a variant of OLE CF format)
@@ -218,7 +219,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
     fwinc = readBin(raw.data[321:324], "numeric", 1, 4),
     fwtype = readBin(raw.data[325], "integer", 1, 1, signed = TRUE),
     ## 187 bytes reserved
-    .last.read = .spc.size["hdr"]
+    .last.read = .spc_size["hdr"]
   )
 
   ## R doesn't have unsigned long int .................................
@@ -242,7 +243,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   hdr$fexper <- factor(hdr$fexper + 1, levels = seq_along(experiments))
   levels(hdr$fexper) <- experiments
 
-  hdr$ftflgs <- .spc.ftflags(hdr$ftflgs)
+  hdr$ftflgs <- .spc_ftflags(hdr$ftflgs)
 
   hdr$fdate <- ISOdate(
     year = hdr$fdate %/% 1048560,
@@ -273,10 +274,10 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
     if (tmp[3] > 0) hdr$fztype <- hdr$fcatxt[3]
     if (tmp[4] > 0) hdr$fwtype <- hdr$fcatxt[4]
   }
-  hdr$fxtype <- .spc.xlab(hdr$fxtype)
-  hdr$fytype <- .spc.ylab(hdr$fytype)
-  hdr$fztype <- .spc.xlab(hdr$fztype)
-  hdr$fwtype <- .spc.xlab(hdr$fwtype)
+  hdr$fxtype <- .spc_xlab(hdr$fxtype)
+  hdr$fytype <- .spc_ylab(hdr$fytype)
+  hdr$fztype <- .spc_xlab(hdr$fztype)
+  hdr$fwtype <- .spc_xlab(hdr$fwtype)
 
 
   ## File with subfiles with individual x axes?
@@ -286,8 +287,8 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
     if (hdr$fnpts > length(raw.data) ||
       (hdr$fnpts > hdr$flogoff && hdr$flogoff > 0) ||
       hdr$fnpts < 512) {
-      .spc.error(
-        ".spc.read.hdr", list(hdr = hdr),
+      .spc_error(
+        ".spc_read_hdr", list(hdr = hdr),
         "file header flags specify TXYXYS and TMULTI, ",
         "but fnpts does not give a valid offset for the subfile directory.\n hdr$ftflgs = ",
         paste(names(hdr$ftflgs)[hdr$ftflgs], collapse = " | "),
@@ -362,7 +363,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ## needs header for consistency checks
 ##
 
-.spc.subhdr <- function(raw.data, pos, hdr) {
+.spc_subhdr <- function(raw.data, pos, hdr) {
   subhdr <- list(
     subflgs = raw.data[pos + (1)],
     subexp = readBin(raw.data[pos + (2)], "integer", 1, 1, signed = TRUE),
@@ -384,7 +385,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
     )
   }
 
-  hdr$.last.read <- pos + .spc.size["subhdr"]
+  hdr$.last.read <- pos + .spc_size["subhdr"]
 
   ## checking
   if (subhdr$subexp == -128 && hdr$fexp != -128) {
@@ -413,8 +414,8 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 
   if (!hdr$ftflgs["TXYXYS"]) {
     if (hdr$fnpts != subhdr$subnpts) {
-      .spc.error(
-        ".spc.read.subhdr", list(hdr = hdr, subhdr = subhdr),
+      .spc_error(
+        ".spc_read_subhdr", list(hdr = hdr, subhdr = subhdr),
         "hdr and subhdr differ in number of points per spectrum, ",
         "but TXYXYS is not specified.\n hdr$ftflgs = ",
         paste(names(hdr$ftflgs)[hdr$ftflgs], collapse = " | "),
@@ -475,7 +476,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ## read subfile directory ...........................................................................
 ##
 
-.spc.subfiledir <- function(raw.data, pos, nsub) {
+.spc_subfiledir <- function(raw.data, pos, nsub) {
   dir <- data.frame(
     ssfposn = rep(NA, nsub),
     ssfsize = rep(NA, nsub),
@@ -488,7 +489,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
       readBin(raw.data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
       readBin(raw.data[pos + (9:12)], "numeric", 1, 4)
     )
-    pos <- pos + .spc.size["subfiledir"]
+    pos <- pos + .spc_size["subfiledir"]
   }
 
   ## R doesn't have unsigned long int .................................
@@ -505,7 +506,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 
 ## read log block header ............................................................................
 ##
-.spc.log <- function(raw.data, pos, log.bin, log.disk, log.txt, keys.log2data,
+.spc_log <- function(raw.data, pos, log.bin, log.disk, log.txt, keys_log2data,
                      replace.nul = as.raw(255), iconv.from = "latin1", iconv.to = "utf8") {
   if (pos == 0) { # no log block exists
     return(list(
@@ -521,7 +522,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
     logbins = readBin(raw.data[pos + (13:16)], "integer", 1, 4), # , signed = FALSE),
     logdsks = readBin(raw.data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
     ## 44 bytes reserved
-    .last.read = pos + .spc.size["loghdr"]
+    .last.read = pos + .spc_size["loghdr"]
   )
 
   ## R doesn't have unsigned long int .................................
@@ -557,7 +558,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
     log.txt <- iconv(log.txt, iconv.from, iconv.to)
     log.txt <- split.string(log.txt, "\r\n") ## spc file spec says \r\n regardless of OS
     log.txt <- split.line(log.txt, "=")
-    data <- getbynames(log.txt, keys.log2data)
+    data <- getbynames(log.txt, keys_log2data)
   }
 
   list(log.long = log, extra.data = data)
@@ -567,7 +568,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ## read y data ...............................................................
 ##
 
-.spc.read.y <- function(raw.data, pos, npts, exponent, word) {
+.spc_read_y <- function(raw.data, pos, npts, exponent, word) {
   if (exponent == -128) { # 4 byte float
 
     list(
@@ -593,7 +594,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ## read x data ...............................................................
 ##
 
-.spc.read.x <- function(raw.data, pos, npts) {
+.spc_read_x <- function(raw.data, pos, npts) {
   list(
     x = readBin(raw.data[pos + seq_len(npts * 4)], "numeric", npts, 4),
     .last.read = pos + 4 * npts
@@ -601,7 +602,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 }
 
 ## error .....................................................................
-.spc.error <- function(fname, objects, ...) {
+.spc_error <- function(fname, objects, ...) {
   cat("ERROR in read_spc() function ", fname, "\n\n")
   for (i in seq_along(objects)) {
     cat(names(objects)[i], ":\n")
@@ -610,7 +611,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   stop(...)
 }
 
-.spc.ftflags <- function(x) {
+.spc_ftflags <- function(x) {
   ftflgs <- as.logical(x %/% 2^(0:7) %% 2)
   names(ftflgs) <- c(
     "TSPREC", "TCGRAM", "TMULTI", "TRANDM",
@@ -627,7 +628,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 #' These functions allow to import Thermo Galactic/Grams `.spc` files.
 #'
 #' @param filename The complete file name of the `.spc` file.
-#' @param keys.hdr2data,keys.log2data character vectors with the names of
+#' @param keys_hdr2data,keys_log2data character vectors with the names of
 #' parameters in the `.spc`
 #' file's log block (log2xxx) or header (hdr2xxx) that should go into the
 #' extra data (yyy2data) of the returned hyperSpec object.
@@ -688,7 +689,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 #'
 #' @importFrom utils modifyList
 read_spc <- function(filename,
-                     keys.hdr2data = FALSE, keys.log2data = FALSE,
+                     keys_hdr2data = FALSE, keys_log2data = FALSE,
                      log.txt = TRUE, log.bin = FALSE, log.disk = FALSE,
                      hdr = list(),
                      no.object = FALSE) {
@@ -701,7 +702,7 @@ read_spc <- function(filename,
 
   f <- readBin(filename, "raw", file.info(filename)$size, 1)
 
-  hdr <- modifyList(.spc.filehdr(f), hdr)
+  hdr <- modifyList(.spc_filehdr(f), hdr)
   fpos <- hdr$.last.read
 
   if (!hdr$ftflgs["TXYXYS"]) {
@@ -712,7 +713,7 @@ read_spc <- function(filename,
       ## spectra with common unevenly spaced wavelength axis
       # if (! hdr$ftflgs ['TMULTI']) { # also for multifile with common
       # wavelength axis
-      tmp <- .spc.read.x(f, fpos, hdr$fnpts)
+      tmp <- .spc_read_x(f, fpos, hdr$fnpts)
       wavelength <- tmp$x
       fpos <- tmp$.last.read
     }
@@ -740,14 +741,14 @@ read_spc <- function(filename,
   }
 
   ## process the log block
-  tmp <- .spc.log(
+  tmp <- .spc_log(
     f, hdr$flogoff,
     log.bin, log.disk, log.txt,
-    keys.log2data
+    keys_log2data
   )
   ## TODO: remove data2log
 
-  data <- c(data, tmp$extra.data, getbynames(hdr, keys.hdr2data))
+  data <- c(data, tmp$extra.data, getbynames(hdr, keys_hdr2data))
 
   ## preallocate spectra matrix or list for multispectra file with separate
   ## wavelength axes
@@ -762,15 +763,15 @@ read_spc <- function(filename,
 
   ## read subfiles
   if (hdr$subfiledir) { ## TXYXYS
-    hdr$subfiledir <- .spc.subfiledir(f, hdr$subfiledir, hdr$fnsub)
+    hdr$subfiledir <- .spc_subfiledir(f, hdr$subfiledir, hdr$fnsub)
 
     for (s in seq_len(hdr$fnsub)) {
-      hdr <- .spc.subhdr(f, hdr$subfiledir$ssfposn[s], hdr)
+      hdr <- .spc_subhdr(f, hdr$subfiledir$ssfposn[s], hdr)
       fpos <- hdr$.last.read
-      wavelength <- .spc.read.x(f, fpos, hdr$subhdr$subnpts)
+      wavelength <- .spc_read_x(f, fpos, hdr$subhdr$subnpts)
       fpos <- wavelength$.last.read
 
-      y <- .spc.read.y(f, fpos,
+      y <- .spc_read_y(f, fpos,
         npts = hdr$subhdr$subnpts, exponent = hdr$subhdr$subexp,
         word = hdr$ftflgs["TSPREC"]
       )
@@ -784,7 +785,7 @@ read_spc <- function(filename,
       }
 
       if (!exists("wavelength")) {
-        .spc.error(
+        .spc_error(
           "read_spc", list(hdr = hdr),
           "wavelength not read. This may be caused by wrong header information."
         )
@@ -799,9 +800,9 @@ read_spc <- function(filename,
     }
   } else { ## multiple y data blocks behind each other
     for (s in seq_len(hdr$fnsub)) {
-      hdr <- .spc.subhdr(f, fpos, hdr)
+      hdr <- .spc_subhdr(f, fpos, hdr)
       fpos <- hdr$.last.read
-      tmp <- .spc.read.y(f, fpos,
+      tmp <- .spc_read_y(f, fpos,
         npts = hdr$subhdr$subnpts, exponent = hdr$subhdr$subexp,
         word = hdr$ftflgs["TSPREC"]
       )
@@ -967,7 +968,7 @@ hySpc.testthat::test(read_spc) <- function() {
 
   test_that("hdr2data", {
     expect_equal(
-      colnames(read_spc(paste0(labram_path, "/LabRam-2.spc"), keys.hdr2data = TRUE)),
+      colnames(read_spc(paste0(labram_path, "/LabRam-2.spc"), keys_hdr2data = TRUE)),
       c(
         "z", "z.end", "ftflgs", "fexper", "fexp", "fnpts", "ffirst",
         "flast", "fnsub", "fxtype", "fytype", "fztype", "fpost", "fdate",
