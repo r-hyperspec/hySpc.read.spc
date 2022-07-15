@@ -1078,7 +1078,7 @@ split.line <- function(x, separator, trim.blank = TRUE) {
 
 # Unit tests -----------------------------------------------------------------
 hySpc.testthat::test(split_string) <- function() {
-  context("split_string")
+  context("split_string()")
 
   # Perform tests
   test_that("split_string() returnts output silently", {
@@ -1115,7 +1115,7 @@ getbynames <- function(x, e) {
 
 # Unit tests -----------------------------------------------------------------
 hySpc.testthat::test(getbynames) <- function() {
-  context("getbynames")
+  context("getbynames()")
 
   # Perform tests
   test_that("getbynames() works", {

@@ -4,7 +4,7 @@ read_spc_Shimadzu <- function(filename) {
 }
 
 hySpc.testthat::test(read_spc_Shimadzu) <- function() {
-  context("read_spc_Shimadzu")
+  context("read_spc_Shimadzu()")
 
   test_that("not implemented error", {
     expect_error(read_spc_Shimadzu())
