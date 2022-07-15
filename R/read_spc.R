@@ -860,6 +860,11 @@ hySpc.testthat::test(read_spc) <- function() {
 
   old_spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO_3D.SPC", "/LC_DIODE_ARRAY.SPC"))
 
+  test_that("read_spc() and read_spc('') fail", {
+    expect_error(read_spc(), "Argument 'filename' is missing")
+    expect_error(read_spc(""), "Argument 'filename' is an empty string")
+  })
+
   test_that("old file format -> error", {
     for (f in old_spc) {
       expect_error(read_spc(f))
