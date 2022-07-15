@@ -558,7 +558,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
     log_txt <- gsub(rawToChar(replace.nul), "\r\n", log_txt)
     log_txt <- iconv(log_txt, iconv.from, iconv.to)
     log_txt <- split_string(log_txt, "\r\n") ## spc file spec says \r\n regardless of OS
-    log_txt <- split.line(log_txt, "=")
+    log_txt <- split_line(log_txt, "=")
     data <- get_by_names(log_txt, keys_log2data)
   }
 
@@ -1056,9 +1056,9 @@ split_string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
   x
 }
 
-### split.line
+### split_line
 
-split.line <- function(x, separator, trim.blank = TRUE) {
+split_line <- function(x, separator, trim.blank = TRUE) {
   tmp <- regexpr(separator, x)
 
   key <- substr(x, 1, tmp - 1)
