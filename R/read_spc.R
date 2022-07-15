@@ -1,23 +1,24 @@
-### read.spc: Import Thermo Galactic's .spc file format into an hyperSpec object
-###
-### C. Beleites 2009/11/29
-###
-###############################################################################
+##############################################################################~
+# read_spc: Import Thermo Galactic's .spc file format into a hyperSpec object
+#
+# C. Beleites 2009/11/29
+#
+##############################################################################~
 
 ## Define constants -----------------------------------------------------------
 
 .nul <- as.raw(0)
 
 ## header sizes
-.spc.size <- c(hdr = 512, subhdr = 32, subfiledir = 12, loghdr = 64)
+.spc_size <- c(hdr = 512, subhdr = 32, subfiledir = 12, loghdr = 64)
 
-.spc.default.keys.hdr2data <- c("fexper", "fres", "fsource")
-.spc.default.keys.log2data <- FALSE
+.spc_default_keys_hdr2data <- c("fexper", "fres", "fsource")
+.spc_default_keys_log2data <- FALSE
 
 ## axis labeling --------------------------------------------------------------
 
 ## x-axis units ...............................................................
-.spc.FXTYPE <- c(
+.spc_FXTYPE <- c(
   expression(`/`(x, "a. u.")), # 0
   expression(`/`(tilde(nu), cm^-1)),
   expression(`/`(lambda, (mu * m))),
@@ -51,11 +52,11 @@
   expression(`/`(t, h)) # 30
 )
 
-.spc.xlab <- function(x) {
+.spc_xlab <- function(x) {
   if (is.character(x)) {
     x
-  } else if (x <= length(.spc.FXTYPE) + 1) {
-    .spc.FXTYPE[x + 1]
+  } else if (x <= length(.spc_FXTYPE) + 1) {
+    .spc_FXTYPE[x + 1]
   } else {
     ## x = 255 is for double interferogram and supposed not to have a label.
     ## Thus, returning NA is appropriate
@@ -64,7 +65,7 @@
 }
 
 ## y-axis units ..............................................................
-.spc.FYTYPE <- c(
+.spc_FYTYPE <- c(
   expression(`/`(I[Ref], "a. u.")), # -1
   expression(`/`(I, "a. u.")),
   expression(`/`(I[IGRM], "a. u.")),
@@ -99,23 +100,24 @@
   expression(`/`(I[Emission], "a. u."))
 )
 
-.spc.ylab <- function(x) {
+.spc_ylab <- function(x) {
   if (is.character(x)) {
     x
   } else if (x <= 26) {
-    .spc.FYTYPE[x + 2]
+    .spc_FYTYPE[x + 2]
   } else if (x %in% 128:131) {
-    .spc.FYTYPE[x - 99]
+    .spc_FYTYPE[x - 99]
   } else {
     NA
   }
 }
 
 ## helper functions ----------------------------------------------------------
-### raw.split.nul - rawToChar conversion, splitting at \0
+### .raw_split_nul - rawToChar conversion, splitting at \0
 #' @importFrom utils tail
-raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.collapse = NULL) {
-  # todo make better truncation
+.raw_split_nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
+                          paste.collapse = NULL) {
+  # TODO make better truncation
   trunc <- rep(trunc, length.out = 2)
 
   if (trunc[1] && raw[1] == .nul) {
@@ -164,12 +166,12 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ##
 
 #' @importFrom utils maintainer
-.spc.filehdr <- function(raw.data) {
+.spc_file_hdr <- function(raw_data) {
   ## check file format
 
   ## Detect Shimadzu SPC (which is effectively a variant of OLE CF format)
   if (isTRUE(all.equal(
-    raw.data[1:4],
+    raw_data[1:4],
     as.raw(c("0xD0", "0xCF", "0x11", "0xE0"))
   ))) {
     stop("Support for Shimadzu SPC file format (OLE CF) is not yet implemented")
@@ -178,7 +180,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   ## NEW.LSB = 75 supported,
   ## NEW.MSB = 76 not supported (neither by many Grams software according to spc doc)
   ## OLD     = 77 not supported (replaced by new format in 1996)
-  if (raw.data[2] != 75) {
+  if (raw_data[2] != 75) {
     stop(
       "Wrong spc file format version (or no spc file at all).\n",
       "Only 'new' spc files (1996 file format) with LSB word order are supported."
@@ -186,38 +188,38 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   }
 
   hdr <- list(
-    ftflgs = readBin(raw.data[1], "integer", 1, 1, signed = FALSE),
+    ftflgs = readBin(raw_data[1], "integer", 1, 1, signed = FALSE),
     ## byte 2 is already interpreted
-    fexper = readBin(raw.data[3], "integer", 1, 1, signed = TRUE),
-    fexp = readBin(raw.data[4], "integer", 1, 1, signed = TRUE),
-    fnpts = readBin(raw.data[5:8], "integer", 1, 4),
-    ffirst = readBin(raw.data[9:16], "double", 1, 8),
-    flast = readBin(raw.data[17:24], "double", 1, 8),
-    fnsub = readBin(raw.data[25:28], "integer", 1, 4),
-    fxtype = readBin(raw.data[29], "integer", 1, 1, signed = FALSE),
-    fytype = readBin(raw.data[30], "integer", 1, 1, signed = FALSE),
-    fztype = readBin(raw.data[31], "integer", 1, 1, signed = FALSE),
-    fpost = readBin(raw.data[32], "integer", 1, 1, signed = TRUE),
-    fdate = readBin(raw.data[33:36], "integer", 1, 4),
-    fres = raw.split.nul(raw.data[37:45], paste.collapse = "\r\n"),
-    fsource = raw.split.nul(raw.data[46:54], paste.collapse = "\r\n"),
-    fpeakpt = readBin(raw.data[55:56], "integer", 1, 2, signed = FALSE),
-    fspare = readBin(raw.data[57:88], "numeric", 8, 4),
-    fcmnt = raw.split.nul(raw.data[89:218], paste.collapse = "\r\n"),
-    fcatxt = raw.split.nul(raw.data[219:248], trunc = c(FALSE, TRUE)),
-    flogoff = readBin(raw.data[249:252], "integer", 1, 4), # , signed = FALSE),
-    fmods = readBin(raw.data[253:256], "integer", 1, 4), # , signed = FALSE),
-    fprocs = readBin(raw.data[257], "integer", 1, 1, signed = TRUE),
-    flevel = readBin(raw.data[258], "integer", 1, 1, signed = TRUE),
-    fsampin = readBin(raw.data[259:260], "integer", 1, 2, signed = FALSE),
-    ffactor = readBin(raw.data[261:264], "numeric", 1, 4),
-    fmethod = raw.split.nul(raw.data[265:312]),
-    fzinc = readBin(raw.data[313:316], "numeric", 1, 4), # , signed = FALSE),
-    fwplanes = readBin(raw.data[317:320], "integer", 1, 4), # , signed = FALSE),
-    fwinc = readBin(raw.data[321:324], "numeric", 1, 4),
-    fwtype = readBin(raw.data[325], "integer", 1, 1, signed = TRUE),
+    fexper = readBin(raw_data[3], "integer", 1, 1, signed = TRUE),
+    fexp = readBin(raw_data[4], "integer", 1, 1, signed = TRUE),
+    fnpts = readBin(raw_data[5:8], "integer", 1, 4),
+    ffirst = readBin(raw_data[9:16], "double", 1, 8),
+    flast = readBin(raw_data[17:24], "double", 1, 8),
+    fnsub = readBin(raw_data[25:28], "integer", 1, 4),
+    fxtype = readBin(raw_data[29], "integer", 1, 1, signed = FALSE),
+    fytype = readBin(raw_data[30], "integer", 1, 1, signed = FALSE),
+    fztype = readBin(raw_data[31], "integer", 1, 1, signed = FALSE),
+    fpost = readBin(raw_data[32], "integer", 1, 1, signed = TRUE),
+    fdate = readBin(raw_data[33:36], "integer", 1, 4),
+    fres = .raw_split_nul(raw_data[37:45], paste.collapse = "\r\n"),
+    fsource = .raw_split_nul(raw_data[46:54], paste.collapse = "\r\n"),
+    fpeakpt = readBin(raw_data[55:56], "integer", 1, 2, signed = FALSE),
+    fspare = readBin(raw_data[57:88], "numeric", 8, 4),
+    fcmnt = .raw_split_nul(raw_data[89:218], paste.collapse = "\r\n"),
+    fcatxt = .raw_split_nul(raw_data[219:248], trunc = c(FALSE, TRUE)),
+    flogoff = readBin(raw_data[249:252], "integer", 1, 4), # , signed = FALSE),
+    fmods = readBin(raw_data[253:256], "integer", 1, 4), # , signed = FALSE),
+    fprocs = readBin(raw_data[257], "integer", 1, 1, signed = TRUE),
+    flevel = readBin(raw_data[258], "integer", 1, 1, signed = TRUE),
+    fsampin = readBin(raw_data[259:260], "integer", 1, 2, signed = FALSE),
+    ffactor = readBin(raw_data[261:264], "numeric", 1, 4),
+    fmethod = .raw_split_nul(raw_data[265:312]),
+    fzinc = readBin(raw_data[313:316], "numeric", 1, 4), # , signed = FALSE),
+    fwplanes = readBin(raw_data[317:320], "integer", 1, 4), # , signed = FALSE),
+    fwinc = readBin(raw_data[321:324], "numeric", 1, 4),
+    fwtype = readBin(raw_data[325], "integer", 1, 1, signed = TRUE),
     ## 187 bytes reserved
-    .last.read = .spc.size["hdr"]
+    .last.read = .spc_size["hdr"]
   )
 
   ## R doesn't have unsigned long int .................................
@@ -241,7 +243,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   hdr$fexper <- factor(hdr$fexper + 1, levels = seq_along(experiments))
   levels(hdr$fexper) <- experiments
 
-  hdr$ftflgs <- .spc.ftflags(hdr$ftflgs)
+  hdr$ftflgs <- .spc_ftflags(hdr$ftflgs)
 
   hdr$fdate <- ISOdate(
     year = hdr$fdate %/% 1048560,
@@ -272,21 +274,21 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
     if (tmp[3] > 0) hdr$fztype <- hdr$fcatxt[3]
     if (tmp[4] > 0) hdr$fwtype <- hdr$fcatxt[4]
   }
-  hdr$fxtype <- .spc.xlab(hdr$fxtype)
-  hdr$fytype <- .spc.ylab(hdr$fytype)
-  hdr$fztype <- .spc.xlab(hdr$fztype)
-  hdr$fwtype <- .spc.xlab(hdr$fwtype)
+  hdr$fxtype <- .spc_xlab(hdr$fxtype)
+  hdr$fytype <- .spc_ylab(hdr$fytype)
+  hdr$fztype <- .spc_xlab(hdr$fztype)
+  hdr$fwtype <- .spc_xlab(hdr$fwtype)
 
 
   ## File with subfiles with individual x axes?
   ## Then there should be a subfile directory:
   if (hdr$ftflgs["TXYXYS"] && hdr$ftflgs["TMULTI"]) {
     ## try to reject impossible values for the subfiledir offset
-    if (hdr$fnpts > length(raw.data) ||
+    if (hdr$fnpts > length(raw_data) ||
       (hdr$fnpts > hdr$flogoff && hdr$flogoff > 0) ||
       hdr$fnpts < 512) {
-      .spc.error(
-        ".spc.read.hdr", list(hdr = hdr),
+      .spc_error(
+        ".spc_read_hdr", list(hdr = hdr),
         "file header flags specify TXYXYS and TMULTI, ",
         "but fnpts does not give a valid offset for the subfile directory.\n hdr$ftflgs = ",
         paste(names(hdr$ftflgs)[hdr$ftflgs], collapse = " | "),
@@ -361,17 +363,17 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ## needs header for consistency checks
 ##
 
-.spc.subhdr <- function(raw.data, pos, hdr) {
+.spc_subhdr <- function(raw_data, pos, hdr) {
   subhdr <- list(
-    subflgs = raw.data[pos + (1)],
-    subexp = readBin(raw.data[pos + (2)], "integer", 1, 1, signed = TRUE),
-    subindx = readBin(raw.data[pos + (3:4)], "integer", 1, 2, signed = FALSE),
-    subtime = readBin(raw.data[pos + (5:8)], "numeric", 1, 4),
-    subnext = readBin(raw.data[pos + (9:12)], "numeric", 1, 4),
-    subnois = readBin(raw.data[pos + (13:16)], "numeric", 1, 4),
-    subnpts = readBin(raw.data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
-    subscan = readBin(raw.data[pos + (21:24)], "integer", 1, 4), # , signed = FALSE),
-    subwlevel = readBin(raw.data[pos + (25:28)], "numeric", 1, 4)
+    subflgs = raw_data[pos + (1)],
+    subexp = readBin(raw_data[pos + (2)], "integer", 1, 1, signed = TRUE),
+    subindx = readBin(raw_data[pos + (3:4)], "integer", 1, 2, signed = FALSE),
+    subtime = readBin(raw_data[pos + (5:8)], "numeric", 1, 4),
+    subnext = readBin(raw_data[pos + (9:12)], "numeric", 1, 4),
+    subnois = readBin(raw_data[pos + (13:16)], "numeric", 1, 4),
+    subnpts = readBin(raw_data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
+    subscan = readBin(raw_data[pos + (21:24)], "integer", 1, 4), # , signed = FALSE),
+    subwlevel = readBin(raw_data[pos + (25:28)], "numeric", 1, 4)
   )
   ## 4 bytes reserved
 
@@ -383,7 +385,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
     )
   }
 
-  hdr$.last.read <- pos + .spc.size["subhdr"]
+  hdr$.last.read <- pos + .spc_size["subhdr"]
 
   ## checking
   if (subhdr$subexp == -128 && hdr$fexp != -128) {
@@ -412,8 +414,8 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 
   if (!hdr$ftflgs["TXYXYS"]) {
     if (hdr$fnpts != subhdr$subnpts) {
-      .spc.error(
-        ".spc.read.subhdr", list(hdr = hdr, subhdr = subhdr),
+      .spc_error(
+        ".spc_read_subhdr", list(hdr = hdr, subhdr = subhdr),
         "hdr and subhdr differ in number of points per spectrum, ",
         "but TXYXYS is not specified.\n hdr$ftflgs = ",
         paste(names(hdr$ftflgs)[hdr$ftflgs], collapse = " | "),
@@ -474,7 +476,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ## read subfile directory ...........................................................................
 ##
 
-.spc.subfiledir <- function(raw.data, pos, nsub) {
+.spc_subfile_dir <- function(raw_data, pos, nsub) {
   dir <- data.frame(
     ssfposn = rep(NA, nsub),
     ssfsize = rep(NA, nsub),
@@ -483,11 +485,11 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 
   for (s in seq_len(nsub)) {
     dir[s, ] <- c(
-      readBin(raw.data[pos + (1:4)], "integer", 1, 4), # , signed = FALSE),
-      readBin(raw.data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
-      readBin(raw.data[pos + (9:12)], "numeric", 1, 4)
+      readBin(raw_data[pos + (1:4)], "integer", 1, 4), # , signed = FALSE),
+      readBin(raw_data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
+      readBin(raw_data[pos + (9:12)], "numeric", 1, 4)
     )
-    pos <- pos + .spc.size["subfiledir"]
+    pos <- pos + .spc_size["subfiledir"]
   }
 
   ## R doesn't have unsigned long int .................................
@@ -502,10 +504,11 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   dir
 }
 
-## read log block header ............................................................................
+## read log block header ......................................................
 ##
-.spc.log <- function(raw.data, pos, log.bin, log.disk, log.txt, keys.log2data,
-                     replace.nul = as.raw(255), iconv.from = "latin1", iconv.to = "utf8") {
+.spc_log <- function(raw_data, pos, log_bin, log_disk, log_txt, keys_log2data,
+                     replace.nul = as.raw(255), iconv.from = "latin1",
+                     iconv.to = "utf8") {
   if (pos == 0) { # no log block exists
     return(list(
       data = list(),
@@ -514,13 +517,13 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   }
 
   loghdr <- list(
-    logsizd = readBin(raw.data[pos + (1:4)], "integer", 1, 4), #  , signed = FALSE),
-    logsizm = readBin(raw.data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
-    logtxto = readBin(raw.data[pos + (9:12)], "integer", 1, 4), # , signed = FALSE),
-    logbins = readBin(raw.data[pos + (13:16)], "integer", 1, 4), # , signed = FALSE),
-    logdsks = readBin(raw.data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
+    logsizd = readBin(raw_data[pos + (1:4)], "integer", 1, 4), #  , signed = FALSE),
+    logsizm = readBin(raw_data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
+    logtxto = readBin(raw_data[pos + (9:12)], "integer", 1, 4), # , signed = FALSE),
+    logbins = readBin(raw_data[pos + (13:16)], "integer", 1, 4), # , signed = FALSE),
+    logdsks = readBin(raw_data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
     ## 44 bytes reserved
-    .last.read = pos + .spc.size["loghdr"]
+    .last.read = pos + .spc_size["loghdr"]
   )
 
   ## R doesn't have unsigned long int .................................
@@ -535,54 +538,54 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   data <- list()
 
   ## read binary part of log
-  if (log.bin) {
-    log$.log.bin <- raw.data[loghdr$.last.read + seq_len(loghdr$logbins)]
+  if (log_bin) {
+    log$.log_bin <- raw_data[loghdr$.last.read + seq_len(loghdr$logbins)]
   }
 
   ## read binary on-disk-only part of log
-  if (log.disk) {
-    log$.log.disk <- raw.data[loghdr$.last.read + loghdr$logbins + seq_len(loghdr$logdsks)]
+  if (log_disk) {
+    log$.log_disk <- raw_data[loghdr$.last.read + loghdr$logbins + seq_len(loghdr$logdsks)]
   }
 
   ## read text part of log
-  if (log.txt & loghdr$logsizd > loghdr$logtxto) {
-    log.txt <- raw.data[pos + loghdr$logtxto + seq_len(loghdr$logsizd - loghdr$logtxto)]
-    if (tail(log.txt, 1) == .nul) { # throw away nul at the end
-      log.txt <- head(log.txt, -1)
+  if (log_txt & loghdr$logsizd > loghdr$logtxto) {
+    log_txt <- raw_data[pos + loghdr$logtxto + seq_len(loghdr$logsizd - loghdr$logtxto)]
+    if (tail(log_txt, 1) == .nul) { # throw away nul at the end
+      log_txt <- head(log_txt, -1)
     }
-    log.txt[log.txt == .nul] <- replace.nul
-    log.txt <- readChar(log.txt, length(log.txt), useBytes = T)
-    log.txt <- gsub(rawToChar(replace.nul), "\r\n", log.txt)
-    log.txt <- iconv(log.txt, iconv.from, iconv.to)
-    log.txt <- split.string(log.txt, "\r\n") ## spc file spec says \r\n regardless of OS
-    log.txt <- split.line(log.txt, "=")
-    data <- getbynames(log.txt, keys.log2data)
+    log_txt[log_txt == .nul] <- replace.nul
+    log_txt <- readChar(log_txt, length(log_txt), useBytes = T)
+    log_txt <- gsub(rawToChar(replace.nul), "\r\n", log_txt)
+    log_txt <- iconv(log_txt, iconv.from, iconv.to)
+    log_txt <- split_string(log_txt, "\r\n") ## spc file spec says \r\n regardless of OS
+    log_txt <- split_line(log_txt, "=")
+    data <- get_by_names(log_txt, keys_log2data)
   }
 
-  list(log.long = log, extra.data = data)
+  list(log_long = log, extra.data = data)
 }
 
 
 ## read y data ...............................................................
 ##
 
-.spc.read.y <- function(raw.data, pos, npts, exponent, word) {
+.spc_read_y <- function(raw_data, pos, npts, exponent, word) {
   if (exponent == -128) { # 4 byte float
 
     list(
-      y = readBin(raw.data[pos + seq_len(npts * 4)], "numeric", npts, 4),
+      y = readBin(raw_data[pos + seq_len(npts * 4)], "numeric", npts, 4),
       .last.read = pos + npts * 4
     )
   } else if (word) { # 2 byte fixed point integer = word
 
     list(
-      y = readBin(raw.data[pos + seq_len(npts * 2)], "integer", npts, 2, signed = TRUE) *
+      y = readBin(raw_data[pos + seq_len(npts * 2)], "integer", npts, 2, signed = TRUE) *
         2^(exponent - 16),
       .last.read = pos + npts * 2
     )
   } else { # 4 byte fixed point integer = dword
     list(
-      y = readBin(raw.data[pos + seq_len(npts * 4)], "integer", npts, 4) *
+      y = readBin(raw_data[pos + seq_len(npts * 4)], "integer", npts, 4) *
         2^(exponent - 32),
       .last.read = pos + npts * 4
     )
@@ -592,16 +595,16 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 ## read x data ...............................................................
 ##
 
-.spc.read.x <- function(raw.data, pos, npts) {
+.spc_read_x <- function(raw_data, pos, npts) {
   list(
-    x = readBin(raw.data[pos + seq_len(npts * 4)], "numeric", npts, 4),
+    x = readBin(raw_data[pos + seq_len(npts * 4)], "numeric", npts, 4),
     .last.read = pos + 4 * npts
   )
 }
 
 ## error .....................................................................
-.spc.error <- function(fname, objects, ...) {
-  cat("ERROR in read.spc function ", fname, "\n\n")
+.spc_error <- function(fname, objects, ...) {
+  cat("ERROR in read_spc() function ", fname, "\n\n")
   for (i in seq_along(objects)) {
     cat(names(objects)[i], ":\n")
     str(objects[[i]], vec.len = 20)
@@ -609,7 +612,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   stop(...)
 }
 
-.spc.ftflags <- function(x) {
+.spc_ftflags <- function(x) {
   ftflgs <- as.logical(x %/% 2^(0:7) %% 2)
   names(ftflgs) <- c(
     "TSPREC", "TCGRAM", "TMULTI", "TRANDM",
@@ -618,41 +621,40 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
   ftflgs
 }
 
-#############################################################################
-
+# Main function ###############################################################
 
 #' Import for Thermo Galactic's `spc` file format
 #'
 #' These functions allow to import Thermo Galactic/Grams `.spc` files.
 #'
 #' @param filename The complete file name of the `.spc` file.
-#' @param keys.hdr2data,keys.log2data character vectors with the names of
+#' @param keys_hdr2data,keys_log2data character vectors with the names of
 #' parameters in the `.spc`
 #' file's log block (log2xxx) or header (hdr2xxx) that should go into the
 #' extra data (yyy2data) of the returned hyperSpec object.
 #'
 #' All header fields specified in the `.spc` file format specification (see
 #'   below) are imported and can be referred to by their de-capitalized names.
-#' @param log.txt Should the text part of the `.spc` file's log block be read?
-#' @param log.bin,log.disk Should the normal and on-disk binary parts of the
+#' @param log_txt Should the text part of the `.spc` file's log block be read?
+#' @param log_bin,log_disk Should the normal and on-disk binary parts of the
 #'   `.spc` file's log block be read?  If so, they will be put as raw vectors
-#'   into the hyperSpec object's log.
+#'   into the hyperSpec object's log_
 #' @param hdr A list with fileheader fields that overwrite the settings of
 #'   actual file's header.
 #'
 #' Use with care, and look into the source code for detailed insight on the
 #'   elements of this list.
-#' @param no.object If `TRUE`, a list with wavelengths, spectra, labels,
+#' @param no_object If `TRUE`, a list with wavelengths, spectra, labels,
 #'   log and data are returned instead of a hyperSpec object.
 #'
 #' This parameter will likely be subject to change in future - use with care.
 #' @return If the file contains multiple spectra with individual wavelength
-#'   axes, `read.spc` returns a list of hyperSpec objects.  Otherwise the
+#'   axes, `read_spc()` returns a list of hyperSpec objects. Otherwise the
 #'   result is a hyperSpec object.
 #'
-#' `read.spc.KaiserMap` returns a hyperSpec object with data columns x,
+#' `read_spc_Kaiser_map()` returns a hyperSpec object with data columns x,
 #'   y, and z containing the stage position as recorded in the `.spc` files'
-#'   log.
+#'   log_
 #' @note Only a restricted set of test files was available for development.
 #'   Particularly, the w-planes feature could not be tested.
 #'
@@ -673,24 +675,24 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 #' ## get the sample .spc files from ftirsearch.com (see above)
 #' \dontrun{
 #' # single spectrum
-#' spc <- read.spc("BENZENE.SPC")
+#' spc <- read_spc("BENZENE.SPC")
 #' plot(spc)
 #'
 #' # multi-spectra .spc file with common wavelength axis
-#' spc <- read.spc("IG_MULTI.SPC")
+#' spc <- read_spc("IG_MULTI.SPC")
 #' spc
 #'
 #' # multi-spectra .spc file with individual wavelength axes
-#' spc <- read.spc("BARBITUATES.SPC")
+#' spc <- read_spc("BARBITUATES.SPC")
 #' plot(spc[[1]], lines.args = list(type = "h"))
 #' }
 #'
 #' @importFrom utils modifyList
-read.spc <- function(filename,
-                     keys.hdr2data = FALSE, keys.log2data = FALSE,
-                     log.txt = TRUE, log.bin = FALSE, log.disk = FALSE,
+read_spc <- function(filename,
+                     keys_hdr2data = FALSE, keys_log2data = FALSE,
+                     log_txt = TRUE, log_bin = FALSE, log_disk = FALSE,
                      hdr = list(),
-                     no.object = FALSE) {
+                     no_object = FALSE) {
 
   ## f contains the raw bytes of the file
 
@@ -700,7 +702,7 @@ read.spc <- function(filename,
 
   f <- readBin(filename, "raw", file.info(filename)$size, 1)
 
-  hdr <- modifyList(.spc.filehdr(f), hdr)
+  hdr <- modifyList(.spc_file_hdr(f), hdr)
   fpos <- hdr$.last.read
 
   if (!hdr$ftflgs["TXYXYS"]) {
@@ -711,7 +713,7 @@ read.spc <- function(filename,
       ## spectra with common unevenly spaced wavelength axis
       # if (! hdr$ftflgs ['TMULTI']) { # also for multifile with common
       # wavelength axis
-      tmp <- .spc.read.x(f, fpos, hdr$fnpts)
+      tmp <- .spc_read_x(f, fpos, hdr$fnpts)
       wavelength <- tmp$x
       fpos <- tmp$.last.read
     }
@@ -739,37 +741,37 @@ read.spc <- function(filename,
   }
 
   ## process the log block
-  tmp <- .spc.log(
+  tmp <- .spc_log(
     f, hdr$flogoff,
-    log.bin, log.disk, log.txt,
-    keys.log2data
+    log_bin, log_disk, log_txt,
+    keys_log2data
   )
   ## TODO: remove data2log
 
-  data <- c(data, tmp$extra.data, getbynames(hdr, keys.hdr2data))
+  data <- c(data, tmp$extra.data, get_by_names(hdr, keys_hdr2data))
 
   ## preallocate spectra matrix or list for multispectra file with separate
   ## wavelength axes
   ## populate extra data
   if (hdr$ftflgs["TXYXYS"] && hdr$ftflgs["TMULTI"]) {
     spc <- list()
-    data <- .prepare.hdr.df(data, nsubfiles = 1L)
+    data <- .prepare_hdr_df(data, n_subfiles = 1L)
   } else {
     spc <- matrix(NA, nrow = hdr$fnsub, ncol = hdr$fnpts)
-    data <- .prepare.hdr.df(data, nsubfiles = hdr$fnsub)
+    data <- .prepare_hdr_df(data, n_subfiles = hdr$fnsub)
   }
 
   ## read subfiles
   if (hdr$subfiledir) { ## TXYXYS
-    hdr$subfiledir <- .spc.subfiledir(f, hdr$subfiledir, hdr$fnsub)
+    hdr$subfiledir <- .spc_subfile_dir(f, hdr$subfiledir, hdr$fnsub)
 
     for (s in seq_len(hdr$fnsub)) {
-      hdr <- .spc.subhdr(f, hdr$subfiledir$ssfposn[s], hdr)
+      hdr <- .spc_subhdr(f, hdr$subfiledir$ssfposn[s], hdr)
       fpos <- hdr$.last.read
-      wavelength <- .spc.read.x(f, fpos, hdr$subhdr$subnpts)
+      wavelength <- .spc_read_x(f, fpos, hdr$subhdr$subnpts)
       fpos <- wavelength$.last.read
 
-      y <- .spc.read.y(f, fpos,
+      y <- .spc_read_y(f, fpos,
         npts = hdr$subhdr$subnpts, exponent = hdr$subhdr$subexp,
         word = hdr$ftflgs["TSPREC"]
       )
@@ -783,8 +785,8 @@ read.spc <- function(filename,
       }
 
       if (!exists("wavelength")) {
-        .spc.error(
-          "read.spc", list(hdr = hdr),
+        .spc_error(
+          "read_spc", list(hdr = hdr),
           "wavelength not read. This may be caused by wrong header information."
         )
       }
@@ -798,9 +800,9 @@ read.spc <- function(filename,
     }
   } else { ## multiple y data blocks behind each other
     for (s in seq_len(hdr$fnsub)) {
-      hdr <- .spc.subhdr(f, fpos, hdr)
+      hdr <- .spc_subhdr(f, fpos, hdr)
       fpos <- hdr$.last.read
-      tmp <- .spc.read.y(f, fpos,
+      tmp <- .spc_read_y(f, fpos,
         npts = hdr$subhdr$subnpts, exponent = hdr$subhdr$subexp,
         word = hdr$ftflgs["TSPREC"]
       )
@@ -820,7 +822,7 @@ read.spc <- function(filename,
     ## list of hyperSpec objects
     ## consistent file import behaviour across import functions
     lapply(spc, .spc_io_postprocess_optional, filename = filename)
-  } else if (no.object) {
+  } else if (no_object) {
     list(spc = spc, wavelength = wavelength, data = data, labels = label)
   } else {
     if (hdr$fnsub > 1L && nrow(data) == 1L) {
@@ -837,9 +839,10 @@ read.spc <- function(filename,
   }
 }
 
+# Unit tests -----------------------------------------------------------------
 
-hySpc.testthat::test(read.spc) <- function() {
-  context("read.spc")
+hySpc.testthat::test(read_spc) <- function() {
+  context("read_spc()")
 
   spc_path <- system.file("extdata/spc", package = "hySpc.read.spc")
   shimadzu_path <- system.file("extdata/spc.Shimadzu", package = "hySpc.read.spc")
@@ -847,11 +850,11 @@ hySpc.testthat::test(read.spc) <- function() {
   witec_path <- system.file("extdata/spc.Witec", package = "hySpc.read.spc")
   labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
 
-  old.spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO_3D.SPC", "/LC_DIODE_ARRAY.SPC"))
+  old_spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO_3D.SPC", "/LC_DIODE_ARRAY.SPC"))
 
   test_that("old file format -> error", {
-    for (f in old.spc) {
-      expect_error(read.spc(f))
+    for (f in old_spc) {
+      expect_error(read_spc(f))
     }
   })
 
@@ -882,11 +885,14 @@ hySpc.testthat::test(read.spc) <- function() {
       `fileio/spc/Witec-timeseries.spc` = "65f84533d8",
       `fileio/spc/XYTRACE.SPC` = "28594b6078"
     )
+
+    # FIXME: unit test is missing
+
   })
 
   test_that("LabRam spc files", {
-    labram1 <- read.spc(paste0(labram_path, "/LabRam-1.spc"))
-    labram2 <- read.spc(paste0(labram_path, "/LabRam-2.spc"))
+    labram1 <- read_spc(paste0(labram_path, "/LabRam-1.spc"))
+    labram2 <- read_spc(paste0(labram_path, "/LabRam-2.spc"))
     expect_equal(labram1[[2]][[1]], 785)
     expect_equal(labram1[[1]][[4]], 678)
 
@@ -895,7 +901,7 @@ hySpc.testthat::test(read.spc) <- function() {
   })
 
   test_that("Shimadzu spc files do not yet work", {
-    expect_error(read.spc(paste0(shimadzu_path, "/F80A20-1.SPC")))
+    expect_error(read_spc(paste0(shimadzu_path, "/F80A20-1.SPC")))
 
     fname <- paste0(shimadzu_path, "/UV-2600_labeled_DNA.spc")
 
@@ -903,15 +909,18 @@ hySpc.testthat::test(read.spc) <- function() {
     SHIMADZU_SPC_IMPLEMENTED <- F
     if (SHIMADZU_SPC_IMPLEMENTED) {
       # Compare data from SPC file and from CSV file. They should be equal
-      spc <- read.spc(fname)
+      spc <- read_spc(fname)
 
 
       expected <- read.txt.long(paste0(fname, ".csv"), sep = ",")
       expect_true(all.equal(spc$spc, expected$spc))
     } else {
       # IF NOT IMPLEMENTED
-      # expect_error (read.spc("fileio/spc.Shimadzu/F80A20-1.SPC"), regexp = 'Shimadzu SPC')
-      expect_error(read.spc(fname),
+      # expect_error(
+      #   read_spc("fileio/spc.Shimadzu/F80A20-1.SPC"),
+      #   regexp = 'Shimadzu SPC'
+      # )
+      expect_error(read_spc(fname),
         regexp = "Support for Shimadzu SPC file format (OLE CF) is not yet implemented",
         fixed = T
       )
@@ -921,10 +930,10 @@ hySpc.testthat::test(read.spc) <- function() {
 
 
   test_that("Witec: some files supported", {
-    expect_error(read.spc(paste0(witec_path, "/P_A32_006_Spec_Data_1.spc")))
-    expect_error(read.spc(paste0(witec_path, "/P_A32_007_Spec_Data_1.spc")))
+    expect_error(read_spc(paste0(witec_path, "/P_A32_006_Spec_Data_1.spc")))
+    expect_error(read_spc(paste0(witec_path, "/P_A32_007_Spec_Data_1.spc")))
 
-    tmp <- read.spc(paste0(witec_path, "/Witec-Map.spc"))
+    tmp <- read_spc(paste0(witec_path, "/Witec-Map.spc"))
     expect_equal(tmp[[4]][[179]], 1138)
     expect_equal(tmp[[5]][[347]], 1019)
 
@@ -933,13 +942,13 @@ hySpc.testthat::test(read.spc) <- function() {
     expect_null(tmp$y)
 
     ## spectra numbered in z
-    tmp <- read.spc(paste0(witec_path, "/Witec-timeseries.spc"))
+    tmp <- read_spc(paste0(witec_path, "/Witec-timeseries.spc"))
     expect_equal(tmp[[53]][[231]], 1100)
     expect_equal(tmp[[71]][[739]], 981)
   })
 
 
-  ## Kaiser spc files tested mostly in Kaiser-specific read.spc.Kaiser*
+  ## Kaiser spc files tested mostly in Kaiser-specific read_spc_Kaiser*
   ## unit tests
 
 
@@ -953,10 +962,10 @@ hySpc.testthat::test(read.spc) <- function() {
     file.keep.name <- hy_get_option("file.keep.name")
 
     hy_set_options(file.keep.name = FALSE)
-    expect_null(read.spc(paste0(labram_path, "/LabRam-2.spc"))$filename)
+    expect_null(read_spc(paste0(labram_path, "/LabRam-2.spc"))$filename)
     hy_set_options(file.keep.name = TRUE)
     expect_equal(
-      read.spc(paste0(labram_path, "/LabRam-2.spc"))$filename,
+      read_spc(paste0(labram_path, "/LabRam-2.spc"))$filename,
       paste0(labram_path, "/LabRam-2.spc")
     )
 
@@ -966,7 +975,7 @@ hySpc.testthat::test(read.spc) <- function() {
 
   test_that("hdr2data", {
     expect_equal(
-      colnames(read.spc(paste0(labram_path, "/LabRam-2.spc"), keys.hdr2data = TRUE)),
+      colnames(read_spc(paste0(labram_path, "/LabRam-2.spc"), keys_hdr2data = TRUE)),
       c(
         "z", "z.end", "ftflgs", "fexper", "fexp", "fnpts", "ffirst",
         "flast", "fnsub", "fxtype", "fytype", "fztype", "fpost", "fdate",
@@ -980,7 +989,7 @@ hySpc.testthat::test(read.spc) <- function() {
 }
 
 
-.prepare.hdr.df <- function(data, nsubfiles) {
+.prepare_hdr_df <- function(data, n_subfiles) {
   ## the *type header elements are expressions. They need to be converted
   ## to character.
   data <- lapply(data, function(x) {
@@ -1001,7 +1010,7 @@ hySpc.testthat::test(read.spc) <- function() {
   }
 
   data <- as.data.frame(data, stringsAsFactors = FALSE)
-  data <- data[rep(1L, nsubfiles), ]
+  data <- data[rep(1L, n_subfiles), ]
 
   for (v in vector.entries) {
     data[[v]] <- unclass(data[[v]])
@@ -1011,13 +1020,13 @@ hySpc.testthat::test(read.spc) <- function() {
 }
 
 # Helper functions -----------------------------------------------------------
-### --------------------------------------------------------------------------
+### -------------------------------------------------------------------------~
 ###
-### split.string - split string at pattern
+### split_string - split string at pattern
 ###
 ###
 
-split.string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
+split_string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
   pos <- gregexpr(separator, x)
   if (length(pos) == 1 && pos[[1]] == -1) {
     return(x)
@@ -1050,9 +1059,9 @@ split.string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
   x
 }
 
-### split.line
+### split_line
 
-split.line <- function(x, separator, trim.blank = TRUE) {
+split_line <- function(x, separator, trim.blank = TRUE) {
   tmp <- regexpr(separator, x)
 
   key <- substr(x, 1, tmp - 1)
@@ -1071,28 +1080,28 @@ split.line <- function(x, separator, trim.blank = TRUE) {
 }
 
 # Unit tests -----------------------------------------------------------------
-hySpc.testthat::test(split.string) <- function() {
-  context("split.string")
+hySpc.testthat::test(split_string) <- function() {
+  context("split_string()")
 
   # Perform tests
-  test_that("split.string() returnts output silently", {
-    expect_error(split.string())
-    expect_error(split.string(letters))
+  test_that("split_string() returnts output silently", {
+    expect_error(split_string())
+    expect_error(split_string(letters))
 
-    expect_silent(split.string("letters", "r"))
+    expect_silent(split_string("letters", "r"))
   })
 
   # FIXME (tests): add tests to check the correctness of the output!!!
 }
 
 
-### --------------------------------------------------------------------------
+### -------------------------------------------------------------------------~
 ###
-### getbynames - get list elements by name and if no such element exists, NA
+### get_by_names - get list elements by name and if no such element exists, NA
 ###
 ###
 
-getbynames <- function(x, e) {
+get_by_names <- function(x, e) {
   x <- x[e]
   if (length(x) > 0) {
     if (is.character(e)) {
@@ -1108,16 +1117,16 @@ getbynames <- function(x, e) {
 
 
 # Unit tests -----------------------------------------------------------------
-hySpc.testthat::test(getbynames) <- function() {
-  context("getbynames")
+hySpc.testthat::test(get_by_names) <- function() {
+  context("get_by_names()")
 
   # Perform tests
-  test_that("getbynames() works", {
+  test_that("get_by_names() works", {
     lst <- list(a = 1, b = "b", c = 2i)
 
-    expect_equal(getbynames(lst, "a"), list(a = 1))
-    expect_equal(getbynames(lst, 1), list(a = 1))
-    expect_equal(getbynames(lst, 2), list(b = "b"))
-    expect_equal(getbynames(lst, 6)[[1]], NA)
+    expect_equal(get_by_names(lst, "a"), list(a = 1))
+    expect_equal(get_by_names(lst, 1), list(a = 1))
+    expect_equal(get_by_names(lst, 2), list(b = "b"))
+    expect_equal(get_by_names(lst, 6)[[1]], NA)
   })
 }
