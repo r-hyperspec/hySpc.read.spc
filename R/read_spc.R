@@ -1,7 +1,8 @@
-### read_spc: Import Thermo Galactic's .spc file format into an hyperSpec object
-###
-### C. Beleites 2009/11/29
-###
+###############################################################################
+# read_spc: Import Thermo Galactic's .spc file format into a hyperSpec object
+#
+# C. Beleites 2009/11/29
+#
 ###############################################################################
 
 ## Define constants -----------------------------------------------------------
