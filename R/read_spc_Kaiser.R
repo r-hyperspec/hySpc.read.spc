@@ -83,7 +83,7 @@ read_spc_Kaiser_map <- function(files, keys_log2data = NULL, ...) {
   spc
 }
 
-#' `read_spc_KaiserLowHigh()` is a wrapper for `read_spc_Kaiser` for raw data that is saved
+#' `read_spc_low_high()` is a wrapper for `read_spc_Kaiser` for raw data that is saved
 #' in separate files for low and high wavenumber range.  The wavelength axis holds the pixel
 #' numbers, which repeat for low and high wavenumber ranges.
 #'
@@ -94,7 +94,7 @@ read_spc_Kaiser_map <- function(files, keys_log2data = NULL, ...) {
 #'
 #' @concept io
 #'
-read_spc_KaiserLowHigh <- function(files = stop("file names needed"),
+read_spc_low_high <- function(files = stop("file names needed"),
                                    type = c("single", "map"),
                                    ..., glob = TRUE) {
   if (glob) {
