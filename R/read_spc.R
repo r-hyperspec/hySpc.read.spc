@@ -650,7 +650,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 #'   axes, `read.spc` returns a list of hyperSpec objects.  Otherwise the
 #'   result is a hyperSpec object.
 #'
-#' `read.spc.KaiserMap` returns a hyperSpec object with data columns x,
+#' `read_spc_KaiserMap` returns a hyperSpec object with data columns x,
 #'   y, and z containing the stage position as recorded in the `.spc` files'
 #'   log.
 #' @note Only a restricted set of test files was available for development.
@@ -939,7 +939,7 @@ hySpc.testthat::test(read.spc) <- function() {
   })
 
 
-  ## Kaiser spc files tested mostly in Kaiser-specific read.spc.Kaiser*
+  ## Kaiser spc files tested mostly in Kaiser-specific read_spc_Kaiser*
   ## unit tests
 
 

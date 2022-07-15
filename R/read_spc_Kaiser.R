@@ -1,6 +1,6 @@
 #' Import functions for Kaiser Optical Systems `.spc` files
 #'
-#' `read.spc.Kaiser` imports sets of `.spc` files written by Kaiser Optical Systems' Hologram
+#' `read_spc_Kaiser` imports sets of `.spc` files written by Kaiser Optical Systems' Hologram
 #' software.  It may also serve as an example how to write wrapper functions for `read.spc` to
 #' conveniently import specialized sets of `.spc` files.
 #'
@@ -19,7 +19,7 @@
 #' @return hyperSpec
 #' @examples
 #' ## for examples, please see `vignette ("fileio", package = "hyperSpec")`.
-read.spc.Kaiser <- function(files, ..., glob = TRUE) {
+read_spc_Kaiser <- function(files, ..., glob = TRUE) {
   if (glob) {
     files <- Sys.glob(files)
   }
@@ -55,17 +55,17 @@ read.spc.Kaiser <- function(files, ..., glob = TRUE) {
   .spc_io_postprocess_optional(spc, file.keep.name = FALSE)
 }
 
-#' `read.spc.KaiserMap` is a wrapper for `read.spc.Kaiser` with predefined `log2data`
+#' `read_spc_KaiserMap` is a wrapper for `read_spc_Kaiser` with predefined `log2data`
 #' to fetch the stage position for each file.
 #' @rdname read-spc-Kaiser
 #' @export
 #'
 #' @concept io
 #'
-read.spc.KaiserMap <- function(files, keys.log2data = NULL, ...) {
+read_spc_KaiserMap <- function(files, keys.log2data = NULL, ...) {
   keys.log2data <- c("Stage_X_Position", "Stage_Y_Position", "Stage_Z_Position", keys.log2data)
 
-  spc <- read.spc.Kaiser(files, keys.log2data = keys.log2data, ...)
+  spc <- read_spc_Kaiser(files, keys.log2data = keys.log2data, ...)
 
   spc@data <- spc@data[, !colnames(spc@data) %in% c("z", "z.end"), drop = FALSE]
 
@@ -82,18 +82,18 @@ read.spc.KaiserMap <- function(files, keys.log2data = NULL, ...) {
   spc
 }
 
-#' `read.spc.KaiserLowHigh` is a wrapper for `read.spc.Kaiser` for raw data that is saved
+#' `read_spc_KaiserLowHigh` is a wrapper for `read_spc_Kaiser` for raw data that is saved
 #' in separate files for low and high wavenumber range.  The wavelength axis holds the pixel
 #' numbers, which repeat for low and high wavenumber ranges.
 #'
 #' @rdname read-spc-Kaiser
-#' @param type what kind of measurement was done? If `"map"`, `read.spc.KaiserMap` is used
-#' instead of `read.spc.Kaiser`.
+#' @param type what kind of measurement was done? If `"map"`, `read_spc_KaiserMap` is used
+#' instead of `read_spc_Kaiser`.
 #' @export
 #'
 #' @concept io
 #'
-read.spc.KaiserLowHigh <- function(files = stop("file names needed"),
+read_spc_KaiserLowHigh <- function(files = stop("file names needed"),
                                    type = c("single", "map"),
                                    ..., glob = TRUE) {
   if (glob) {
@@ -105,12 +105,12 @@ read.spc.KaiserLowHigh <- function(files = stop("file names needed"),
   type <- match.arg(type)
   switch(type,
     single = cbind(
-      read.spc.Kaiser(files[1, ], ..., glob = FALSE),
-      read.spc.Kaiser(files[2, ], ..., glob = FALSE)
+      read_spc_Kaiser(files[1, ], ..., glob = FALSE),
+      read_spc_Kaiser(files[2, ], ..., glob = FALSE)
     ),
     map = cbind(
-      read.spc.KaiserMap(files[1, ], ..., glob = FALSE),
-      read.spc.KaiserMap(files[2, ], ..., glob = FALSE)
+      read_spc_KaiserMap(files[1, ], ..., glob = FALSE),
+      read_spc_KaiserMap(files[2, ], ..., glob = FALSE)
     )
   )
 }
