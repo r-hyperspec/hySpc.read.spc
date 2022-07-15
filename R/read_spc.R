@@ -504,10 +504,11 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
   dir
 }
 
-## read log block header ............................................................................
+## read log block header ......................................................
 ##
-.spc_log <- function(raw_data, pos, log.bin, log.disk, log.txt, keys_log2data,
-                     replace.nul = as.raw(255), iconv.from = "latin1", iconv.to = "utf8") {
+.spc_log <- function(raw_data, pos, log_bin, log_disk, log_txt, keys_log2data,
+                     replace.nul = as.raw(255), iconv.from = "latin1",
+                     iconv.to = "utf8") {
   if (pos == 0) { # no log block exists
     return(list(
       data = list(),
@@ -537,31 +538,31 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
   data <- list()
 
   ## read binary part of log
-  if (log.bin) {
-    log$.log.bin <- raw_data[loghdr$.last.read + seq_len(loghdr$logbins)]
+  if (log_bin) {
+    log$.log_bin <- raw_data[loghdr$.last.read + seq_len(loghdr$logbins)]
   }
 
   ## read binary on-disk-only part of log
-  if (log.disk) {
-    log$.log.disk <- raw_data[loghdr$.last.read + loghdr$logbins + seq_len(loghdr$logdsks)]
+  if (log_disk) {
+    log$.log_disk <- raw_data[loghdr$.last.read + loghdr$logbins + seq_len(loghdr$logdsks)]
   }
 
   ## read text part of log
-  if (log.txt & loghdr$logsizd > loghdr$logtxto) {
-    log.txt <- raw_data[pos + loghdr$logtxto + seq_len(loghdr$logsizd - loghdr$logtxto)]
-    if (tail(log.txt, 1) == .nul) { # throw away nul at the end
-      log.txt <- head(log.txt, -1)
+  if (log_txt & loghdr$logsizd > loghdr$logtxto) {
+    log_txt <- raw_data[pos + loghdr$logtxto + seq_len(loghdr$logsizd - loghdr$logtxto)]
+    if (tail(log_txt, 1) == .nul) { # throw away nul at the end
+      log_txt <- head(log_txt, -1)
     }
-    log.txt[log.txt == .nul] <- replace.nul
-    log.txt <- readChar(log.txt, length(log.txt), useBytes = T)
-    log.txt <- gsub(rawToChar(replace.nul), "\r\n", log.txt)
-    log.txt <- iconv(log.txt, iconv.from, iconv.to)
-    log.txt <- split.string(log.txt, "\r\n") ## spc file spec says \r\n regardless of OS
-    log.txt <- split.line(log.txt, "=")
-    data <- getbynames(log.txt, keys_log2data)
+    log_txt[log_txt == .nul] <- replace.nul
+    log_txt <- readChar(log_txt, length(log_txt), useBytes = T)
+    log_txt <- gsub(rawToChar(replace.nul), "\r\n", log_txt)
+    log_txt <- iconv(log_txt, iconv.from, iconv.to)
+    log_txt <- split.string(log_txt, "\r\n") ## spc file spec says \r\n regardless of OS
+    log_txt <- split.line(log_txt, "=")
+    data <- getbynames(log_txt, keys_log2data)
   }
 
-  list(log.long = log, extra.data = data)
+  list(log_long = log, extra.data = data)
 }
 
 
@@ -635,10 +636,10 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 #'
 #' All header fields specified in the `.spc` file format specification (see
 #'   below) are imported and can be referred to by their de-capitalized names.
-#' @param log.txt Should the text part of the `.spc` file's log block be read?
-#' @param log.bin,log.disk Should the normal and on-disk binary parts of the
+#' @param log_txt Should the text part of the `.spc` file's log block be read?
+#' @param log_bin,log_disk Should the normal and on-disk binary parts of the
 #'   `.spc` file's log block be read?  If so, they will be put as raw vectors
-#'   into the hyperSpec object's log.
+#'   into the hyperSpec object's log_
 #' @param hdr A list with fileheader fields that overwrite the settings of
 #'   actual file's header.
 #'
@@ -654,7 +655,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 #'
 #' `read_spc_KaiserMap` returns a hyperSpec object with data columns x,
 #'   y, and z containing the stage position as recorded in the `.spc` files'
-#'   log.
+#'   log_
 #' @note Only a restricted set of test files was available for development.
 #'   Particularly, the w-planes feature could not be tested.
 #'
@@ -690,7 +691,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 #' @importFrom utils modifyList
 read_spc <- function(filename,
                      keys_hdr2data = FALSE, keys_log2data = FALSE,
-                     log.txt = TRUE, log.bin = FALSE, log.disk = FALSE,
+                     log_txt = TRUE, log_bin = FALSE, log_disk = FALSE,
                      hdr = list(),
                      no.object = FALSE) {
 
@@ -743,7 +744,7 @@ read_spc <- function(filename,
   ## process the log block
   tmp <- .spc_log(
     f, hdr$flogoff,
-    log.bin, log.disk, log.txt,
+    log_bin, log_disk, log_txt,
     keys_log2data
   )
   ## TODO: remove data2log
