@@ -56,14 +56,14 @@ read_spc_Kaiser <- function(files, ..., glob = TRUE) {
   .spc_io_postprocess_optional(spc, file.keep.name = FALSE)
 }
 
-#' `read_spc_KaiserMap()` is a wrapper for `read_spc_Kaiser()` with predefined
+#' `read_spc_Kaiser_map()` is a wrapper for `read_spc_Kaiser()` with predefined
 #' `log2data` to fetch the stage position for each file.
 #' @rdname read-spc-Kaiser
 #' @export
 #'
 #' @concept io
 #'
-read_spc_KaiserMap <- function(files, keys_log2data = NULL, ...) {
+read_spc_Kaiser_map <- function(files, keys_log2data = NULL, ...) {
   keys_log2data <- c("Stage_X_Position", "Stage_Y_Position", "Stage_Z_Position", keys_log2data)
 
   spc <- read_spc_Kaiser(files, keys_log2data = keys_log2data, ...)
@@ -88,7 +88,7 @@ read_spc_KaiserMap <- function(files, keys_log2data = NULL, ...) {
 #' numbers, which repeat for low and high wavenumber ranges.
 #'
 #' @rdname read-spc-Kaiser
-#' @param type what kind of measurement was done? If `"map"`, `read_spc_KaiserMap` is used
+#' @param type what kind of measurement was done? If `"map"`, `read_spc_Kaiser_map` is used
 #' instead of `read_spc_Kaiser`.
 #' @export
 #'
@@ -110,8 +110,8 @@ read_spc_KaiserLowHigh <- function(files = stop("file names needed"),
       read_spc_Kaiser(files[2, ], ..., glob = FALSE)
     ),
     map = cbind(
-      read_spc_KaiserMap(files[1, ], ..., glob = FALSE),
-      read_spc_KaiserMap(files[2, ], ..., glob = FALSE)
+      read_spc_Kaiser_map(files[1, ], ..., glob = FALSE),
+      read_spc_Kaiser_map(files[2, ], ..., glob = FALSE)
     )
   )
 }

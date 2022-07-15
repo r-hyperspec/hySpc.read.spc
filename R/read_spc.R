@@ -653,7 +653,7 @@
 #'   axes, `read_spc()` returns a list of hyperSpec objects. Otherwise the
 #'   result is a hyperSpec object.
 #'
-#' `read_spc_KaiserMap` returns a hyperSpec object with data columns x,
+#' `read_spc_Kaiser_map()` returns a hyperSpec object with data columns x,
 #'   y, and z containing the stage position as recorded in the `.spc` files'
 #'   log_
 #' @note Only a restricted set of test files was available for development.
