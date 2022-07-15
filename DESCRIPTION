@@ -1,6 +1,6 @@
 Package: hySpc.read.spc
 Type: Package
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Title: Import Thermo Galactic's .spc File Format into a hyperSpec Object
 Description: Import Thermo Galactic's .spc file format into a hyperSpec object.
 Authors@R: c(
