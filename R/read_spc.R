@@ -557,7 +557,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
     log_txt <- readChar(log_txt, length(log_txt), useBytes = T)
     log_txt <- gsub(rawToChar(replace.nul), "\r\n", log_txt)
     log_txt <- iconv(log_txt, iconv.from, iconv.to)
-    log_txt <- split.string(log_txt, "\r\n") ## spc file spec says \r\n regardless of OS
+    log_txt <- split_string(log_txt, "\r\n") ## spc file spec says \r\n regardless of OS
     log_txt <- split.line(log_txt, "=")
     data <- getbynames(log_txt, keys_log2data)
   }
@@ -1019,11 +1019,11 @@ hySpc.testthat::test(read_spc) <- function() {
 # Helper functions -----------------------------------------------------------
 ### --------------------------------------------------------------------------
 ###
-### split.string - split string at pattern
+### split_string - split string at pattern
 ###
 ###
 
-split.string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
+split_string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
   pos <- gregexpr(separator, x)
   if (length(pos) == 1 && pos[[1]] == -1) {
     return(x)
@@ -1077,15 +1077,15 @@ split.line <- function(x, separator, trim.blank = TRUE) {
 }
 
 # Unit tests -----------------------------------------------------------------
-hySpc.testthat::test(split.string) <- function() {
-  context("split.string")
+hySpc.testthat::test(split_string) <- function() {
+  context("split_string")
 
   # Perform tests
-  test_that("split.string() returnts output silently", {
-    expect_error(split.string())
-    expect_error(split.string(letters))
+  test_that("split_string() returnts output silently", {
+    expect_error(split_string())
+    expect_error(split_string(letters))
 
-    expect_silent(split.string("letters", "r"))
+    expect_silent(split_string("letters", "r"))
   })
 
   # FIXME (tests): add tests to check the correctness of the output!!!
