@@ -31,14 +31,14 @@ read_spc_Kaiser <- function(files, ..., glob = TRUE) {
 
   f <- files[1]
 
-  spc <- read_spc(f, no.object = TRUE, ...)
+  spc <- read_spc(f, no_object = TRUE, ...)
 
   data <- spc$data[rep(1L, length(files)), , drop = FALSE]
 
   spc$spc <- spc$spc[rep(1L, length(files)), , drop = FALSE]
 
   for (f in seq_along(files)) {
-    tmp <- read_spc(files[f], no.object = TRUE, ...)
+    tmp <- read_spc(files[f], no_object = TRUE, ...)
 
     data[f, ] <- tmp$data
     spc$spc[f, ] <- tmp$spc

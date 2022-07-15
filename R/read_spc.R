@@ -645,7 +645,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 #'
 #' Use with care, and look into the source code for detailed insight on the
 #'   elements of this list.
-#' @param no.object If `TRUE`, a list with wavelengths, spectra, labels,
+#' @param no_object If `TRUE`, a list with wavelengths, spectra, labels,
 #'   log and data are returned instead of a hyperSpec object.
 #'
 #' This parameter will likely be subject to change in future - use with care.
@@ -693,7 +693,7 @@ read_spc <- function(filename,
                      keys_hdr2data = FALSE, keys_log2data = FALSE,
                      log_txt = TRUE, log_bin = FALSE, log_disk = FALSE,
                      hdr = list(),
-                     no.object = FALSE) {
+                     no_object = FALSE) {
 
   ## f contains the raw bytes of the file
 
@@ -823,7 +823,7 @@ read_spc <- function(filename,
     ## list of hyperSpec objects
     ## consistent file import behaviour across import functions
     lapply(spc, .spc_io_postprocess_optional, filename = filename)
-  } else if (no.object) {
+  } else if (no_object) {
     list(spc = spc, wavelength = wavelength, data = data, labels = label)
   } else {
     if (hdr$fnsub > 1L && nrow(data) == 1L) {
