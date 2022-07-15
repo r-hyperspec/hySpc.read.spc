@@ -913,7 +913,10 @@ hySpc.testthat::test(read_spc) <- function() {
       expect_true(all.equal(spc$spc, expected$spc))
     } else {
       # IF NOT IMPLEMENTED
-      # expect_error (read_spc("fileio/spc.Shimadzu/F80A20-1.SPC"), regexp = 'Shimadzu SPC')
+      # expect_error(
+      #   read_spc("fileio/spc.Shimadzu/F80A20-1.SPC"),
+      #   regexp = 'Shimadzu SPC'
+      # )
       expect_error(read_spc(fname),
         regexp = "Support for Shimadzu SPC file format (OLE CF) is not yet implemented",
         fixed = T
