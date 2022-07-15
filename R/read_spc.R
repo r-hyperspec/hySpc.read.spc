@@ -166,12 +166,12 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 ##
 
 #' @importFrom utils maintainer
-.spc_filehdr <- function(raw.data) {
+.spc_filehdr <- function(raw_data) {
   ## check file format
 
   ## Detect Shimadzu SPC (which is effectively a variant of OLE CF format)
   if (isTRUE(all.equal(
-    raw.data[1:4],
+    raw_data[1:4],
     as.raw(c("0xD0", "0xCF", "0x11", "0xE0"))
   ))) {
     stop("Support for Shimadzu SPC file format (OLE CF) is not yet implemented")
@@ -180,7 +180,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
   ## NEW.LSB = 75 supported,
   ## NEW.MSB = 76 not supported (neither by many Grams software according to spc doc)
   ## OLD     = 77 not supported (replaced by new format in 1996)
-  if (raw.data[2] != 75) {
+  if (raw_data[2] != 75) {
     stop(
       "Wrong spc file format version (or no spc file at all).\n",
       "Only 'new' spc files (1996 file format) with LSB word order are supported."
@@ -188,36 +188,36 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
   }
 
   hdr <- list(
-    ftflgs = readBin(raw.data[1], "integer", 1, 1, signed = FALSE),
+    ftflgs = readBin(raw_data[1], "integer", 1, 1, signed = FALSE),
     ## byte 2 is already interpreted
-    fexper = readBin(raw.data[3], "integer", 1, 1, signed = TRUE),
-    fexp = readBin(raw.data[4], "integer", 1, 1, signed = TRUE),
-    fnpts = readBin(raw.data[5:8], "integer", 1, 4),
-    ffirst = readBin(raw.data[9:16], "double", 1, 8),
-    flast = readBin(raw.data[17:24], "double", 1, 8),
-    fnsub = readBin(raw.data[25:28], "integer", 1, 4),
-    fxtype = readBin(raw.data[29], "integer", 1, 1, signed = FALSE),
-    fytype = readBin(raw.data[30], "integer", 1, 1, signed = FALSE),
-    fztype = readBin(raw.data[31], "integer", 1, 1, signed = FALSE),
-    fpost = readBin(raw.data[32], "integer", 1, 1, signed = TRUE),
-    fdate = readBin(raw.data[33:36], "integer", 1, 4),
-    fres = raw.split.nul(raw.data[37:45], paste.collapse = "\r\n"),
-    fsource = raw.split.nul(raw.data[46:54], paste.collapse = "\r\n"),
-    fpeakpt = readBin(raw.data[55:56], "integer", 1, 2, signed = FALSE),
-    fspare = readBin(raw.data[57:88], "numeric", 8, 4),
-    fcmnt = raw.split.nul(raw.data[89:218], paste.collapse = "\r\n"),
-    fcatxt = raw.split.nul(raw.data[219:248], trunc = c(FALSE, TRUE)),
-    flogoff = readBin(raw.data[249:252], "integer", 1, 4), # , signed = FALSE),
-    fmods = readBin(raw.data[253:256], "integer", 1, 4), # , signed = FALSE),
-    fprocs = readBin(raw.data[257], "integer", 1, 1, signed = TRUE),
-    flevel = readBin(raw.data[258], "integer", 1, 1, signed = TRUE),
-    fsampin = readBin(raw.data[259:260], "integer", 1, 2, signed = FALSE),
-    ffactor = readBin(raw.data[261:264], "numeric", 1, 4),
-    fmethod = raw.split.nul(raw.data[265:312]),
-    fzinc = readBin(raw.data[313:316], "numeric", 1, 4), # , signed = FALSE),
-    fwplanes = readBin(raw.data[317:320], "integer", 1, 4), # , signed = FALSE),
-    fwinc = readBin(raw.data[321:324], "numeric", 1, 4),
-    fwtype = readBin(raw.data[325], "integer", 1, 1, signed = TRUE),
+    fexper = readBin(raw_data[3], "integer", 1, 1, signed = TRUE),
+    fexp = readBin(raw_data[4], "integer", 1, 1, signed = TRUE),
+    fnpts = readBin(raw_data[5:8], "integer", 1, 4),
+    ffirst = readBin(raw_data[9:16], "double", 1, 8),
+    flast = readBin(raw_data[17:24], "double", 1, 8),
+    fnsub = readBin(raw_data[25:28], "integer", 1, 4),
+    fxtype = readBin(raw_data[29], "integer", 1, 1, signed = FALSE),
+    fytype = readBin(raw_data[30], "integer", 1, 1, signed = FALSE),
+    fztype = readBin(raw_data[31], "integer", 1, 1, signed = FALSE),
+    fpost = readBin(raw_data[32], "integer", 1, 1, signed = TRUE),
+    fdate = readBin(raw_data[33:36], "integer", 1, 4),
+    fres = raw.split.nul(raw_data[37:45], paste.collapse = "\r\n"),
+    fsource = raw.split.nul(raw_data[46:54], paste.collapse = "\r\n"),
+    fpeakpt = readBin(raw_data[55:56], "integer", 1, 2, signed = FALSE),
+    fspare = readBin(raw_data[57:88], "numeric", 8, 4),
+    fcmnt = raw.split.nul(raw_data[89:218], paste.collapse = "\r\n"),
+    fcatxt = raw.split.nul(raw_data[219:248], trunc = c(FALSE, TRUE)),
+    flogoff = readBin(raw_data[249:252], "integer", 1, 4), # , signed = FALSE),
+    fmods = readBin(raw_data[253:256], "integer", 1, 4), # , signed = FALSE),
+    fprocs = readBin(raw_data[257], "integer", 1, 1, signed = TRUE),
+    flevel = readBin(raw_data[258], "integer", 1, 1, signed = TRUE),
+    fsampin = readBin(raw_data[259:260], "integer", 1, 2, signed = FALSE),
+    ffactor = readBin(raw_data[261:264], "numeric", 1, 4),
+    fmethod = raw.split.nul(raw_data[265:312]),
+    fzinc = readBin(raw_data[313:316], "numeric", 1, 4), # , signed = FALSE),
+    fwplanes = readBin(raw_data[317:320], "integer", 1, 4), # , signed = FALSE),
+    fwinc = readBin(raw_data[321:324], "numeric", 1, 4),
+    fwtype = readBin(raw_data[325], "integer", 1, 1, signed = TRUE),
     ## 187 bytes reserved
     .last.read = .spc_size["hdr"]
   )
@@ -284,7 +284,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
   ## Then there should be a subfile directory:
   if (hdr$ftflgs["TXYXYS"] && hdr$ftflgs["TMULTI"]) {
     ## try to reject impossible values for the subfiledir offset
-    if (hdr$fnpts > length(raw.data) ||
+    if (hdr$fnpts > length(raw_data) ||
       (hdr$fnpts > hdr$flogoff && hdr$flogoff > 0) ||
       hdr$fnpts < 512) {
       .spc_error(
@@ -363,17 +363,17 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 ## needs header for consistency checks
 ##
 
-.spc_subhdr <- function(raw.data, pos, hdr) {
+.spc_subhdr <- function(raw_data, pos, hdr) {
   subhdr <- list(
-    subflgs = raw.data[pos + (1)],
-    subexp = readBin(raw.data[pos + (2)], "integer", 1, 1, signed = TRUE),
-    subindx = readBin(raw.data[pos + (3:4)], "integer", 1, 2, signed = FALSE),
-    subtime = readBin(raw.data[pos + (5:8)], "numeric", 1, 4),
-    subnext = readBin(raw.data[pos + (9:12)], "numeric", 1, 4),
-    subnois = readBin(raw.data[pos + (13:16)], "numeric", 1, 4),
-    subnpts = readBin(raw.data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
-    subscan = readBin(raw.data[pos + (21:24)], "integer", 1, 4), # , signed = FALSE),
-    subwlevel = readBin(raw.data[pos + (25:28)], "numeric", 1, 4)
+    subflgs = raw_data[pos + (1)],
+    subexp = readBin(raw_data[pos + (2)], "integer", 1, 1, signed = TRUE),
+    subindx = readBin(raw_data[pos + (3:4)], "integer", 1, 2, signed = FALSE),
+    subtime = readBin(raw_data[pos + (5:8)], "numeric", 1, 4),
+    subnext = readBin(raw_data[pos + (9:12)], "numeric", 1, 4),
+    subnois = readBin(raw_data[pos + (13:16)], "numeric", 1, 4),
+    subnpts = readBin(raw_data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
+    subscan = readBin(raw_data[pos + (21:24)], "integer", 1, 4), # , signed = FALSE),
+    subwlevel = readBin(raw_data[pos + (25:28)], "numeric", 1, 4)
   )
   ## 4 bytes reserved
 
@@ -476,7 +476,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 ## read subfile directory ...........................................................................
 ##
 
-.spc_subfiledir <- function(raw.data, pos, nsub) {
+.spc_subfiledir <- function(raw_data, pos, nsub) {
   dir <- data.frame(
     ssfposn = rep(NA, nsub),
     ssfsize = rep(NA, nsub),
@@ -485,9 +485,9 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 
   for (s in seq_len(nsub)) {
     dir[s, ] <- c(
-      readBin(raw.data[pos + (1:4)], "integer", 1, 4), # , signed = FALSE),
-      readBin(raw.data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
-      readBin(raw.data[pos + (9:12)], "numeric", 1, 4)
+      readBin(raw_data[pos + (1:4)], "integer", 1, 4), # , signed = FALSE),
+      readBin(raw_data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
+      readBin(raw_data[pos + (9:12)], "numeric", 1, 4)
     )
     pos <- pos + .spc_size["subfiledir"]
   }
@@ -506,7 +506,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 
 ## read log block header ............................................................................
 ##
-.spc_log <- function(raw.data, pos, log.bin, log.disk, log.txt, keys_log2data,
+.spc_log <- function(raw_data, pos, log.bin, log.disk, log.txt, keys_log2data,
                      replace.nul = as.raw(255), iconv.from = "latin1", iconv.to = "utf8") {
   if (pos == 0) { # no log block exists
     return(list(
@@ -516,11 +516,11 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
   }
 
   loghdr <- list(
-    logsizd = readBin(raw.data[pos + (1:4)], "integer", 1, 4), #  , signed = FALSE),
-    logsizm = readBin(raw.data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
-    logtxto = readBin(raw.data[pos + (9:12)], "integer", 1, 4), # , signed = FALSE),
-    logbins = readBin(raw.data[pos + (13:16)], "integer", 1, 4), # , signed = FALSE),
-    logdsks = readBin(raw.data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
+    logsizd = readBin(raw_data[pos + (1:4)], "integer", 1, 4), #  , signed = FALSE),
+    logsizm = readBin(raw_data[pos + (5:8)], "integer", 1, 4), # , signed = FALSE),
+    logtxto = readBin(raw_data[pos + (9:12)], "integer", 1, 4), # , signed = FALSE),
+    logbins = readBin(raw_data[pos + (13:16)], "integer", 1, 4), # , signed = FALSE),
+    logdsks = readBin(raw_data[pos + (17:20)], "integer", 1, 4), # , signed = FALSE),
     ## 44 bytes reserved
     .last.read = pos + .spc_size["loghdr"]
   )
@@ -538,17 +538,17 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 
   ## read binary part of log
   if (log.bin) {
-    log$.log.bin <- raw.data[loghdr$.last.read + seq_len(loghdr$logbins)]
+    log$.log.bin <- raw_data[loghdr$.last.read + seq_len(loghdr$logbins)]
   }
 
   ## read binary on-disk-only part of log
   if (log.disk) {
-    log$.log.disk <- raw.data[loghdr$.last.read + loghdr$logbins + seq_len(loghdr$logdsks)]
+    log$.log.disk <- raw_data[loghdr$.last.read + loghdr$logbins + seq_len(loghdr$logdsks)]
   }
 
   ## read text part of log
   if (log.txt & loghdr$logsizd > loghdr$logtxto) {
-    log.txt <- raw.data[pos + loghdr$logtxto + seq_len(loghdr$logsizd - loghdr$logtxto)]
+    log.txt <- raw_data[pos + loghdr$logtxto + seq_len(loghdr$logsizd - loghdr$logtxto)]
     if (tail(log.txt, 1) == .nul) { # throw away nul at the end
       log.txt <- head(log.txt, -1)
     }
@@ -568,23 +568,23 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 ## read y data ...............................................................
 ##
 
-.spc_read_y <- function(raw.data, pos, npts, exponent, word) {
+.spc_read_y <- function(raw_data, pos, npts, exponent, word) {
   if (exponent == -128) { # 4 byte float
 
     list(
-      y = readBin(raw.data[pos + seq_len(npts * 4)], "numeric", npts, 4),
+      y = readBin(raw_data[pos + seq_len(npts * 4)], "numeric", npts, 4),
       .last.read = pos + npts * 4
     )
   } else if (word) { # 2 byte fixed point integer = word
 
     list(
-      y = readBin(raw.data[pos + seq_len(npts * 2)], "integer", npts, 2, signed = TRUE) *
+      y = readBin(raw_data[pos + seq_len(npts * 2)], "integer", npts, 2, signed = TRUE) *
         2^(exponent - 16),
       .last.read = pos + npts * 2
     )
   } else { # 4 byte fixed point integer = dword
     list(
-      y = readBin(raw.data[pos + seq_len(npts * 4)], "integer", npts, 4) *
+      y = readBin(raw_data[pos + seq_len(npts * 4)], "integer", npts, 4) *
         2^(exponent - 32),
       .last.read = pos + npts * 4
     )
@@ -594,9 +594,9 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
 ## read x data ...............................................................
 ##
 
-.spc_read_x <- function(raw.data, pos, npts) {
+.spc_read_x <- function(raw_data, pos, npts) {
   list(
-    x = readBin(raw.data[pos + seq_len(npts * 4)], "numeric", npts, 4),
+    x = readBin(raw_data[pos + seq_len(npts * 4)], "numeric", npts, 4),
     .last.read = pos + 4 * npts
   )
 }
