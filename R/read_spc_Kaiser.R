@@ -1,7 +1,7 @@
 #' Import functions for Kaiser Optical Systems `.spc` files
 #'
 #' `read_spc_Kaiser` imports sets of `.spc` files written by Kaiser Optical Systems' Hologram
-#' software.  It may also serve as an example how to write wrapper functions for `read.spc` to
+#' software.  It may also serve as an example how to write wrapper functions for [read_spc()] to
 #' conveniently import specialized sets of `.spc` files.
 #'
 #' @title read Kaiser `.spc` files

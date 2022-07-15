@@ -1,4 +1,4 @@
-### read.spc: Import Thermo Galactic's .spc file format into an hyperSpec object
+### read_spc: Import Thermo Galactic's .spc file format into an hyperSpec object
 ###
 ### C. Beleites 2009/11/29
 ###
@@ -601,7 +601,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 
 ## error .....................................................................
 .spc.error <- function(fname, objects, ...) {
-  cat("ERROR in read.spc function ", fname, "\n\n")
+  cat("ERROR in read_spc() function ", fname, "\n\n")
   for (i in seq_along(objects)) {
     cat(names(objects)[i], ":\n")
     str(objects[[i]], vec.len = 20)
@@ -647,7 +647,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 #'
 #' This parameter will likely be subject to change in future - use with care.
 #' @return If the file contains multiple spectra with individual wavelength
-#'   axes, `read.spc` returns a list of hyperSpec objects.  Otherwise the
+#'   axes, `read_spc()` returns a list of hyperSpec objects. Otherwise the
 #'   result is a hyperSpec object.
 #'
 #' `read_spc_KaiserMap` returns a hyperSpec object with data columns x,
@@ -686,7 +686,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE, paste.c
 #' }
 #'
 #' @importFrom utils modifyList
-read.spc <- function(filename,
+read_spc <- function(filename,
                      keys.hdr2data = FALSE, keys.log2data = FALSE,
                      log.txt = TRUE, log.bin = FALSE, log.disk = FALSE,
                      hdr = list(),
@@ -784,7 +784,7 @@ read.spc <- function(filename,
 
       if (!exists("wavelength")) {
         .spc.error(
-          "read.spc", list(hdr = hdr),
+          "read_spc", list(hdr = hdr),
           "wavelength not read. This may be caused by wrong header information."
         )
       }
@@ -838,8 +838,8 @@ read.spc <- function(filename,
 }
 
 
-hySpc.testthat::test(read.spc) <- function() {
-  context("read.spc")
+hySpc.testthat::test(read_spc) <- function() {
+  context("read_spc()")
 
   spc_path <- system.file("extdata/spc", package = "hySpc.read.spc")
   shimadzu_path <- system.file("extdata/spc.Shimadzu", package = "hySpc.read.spc")
