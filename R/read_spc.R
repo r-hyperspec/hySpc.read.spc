@@ -756,10 +756,10 @@ read_spc <- function(filename,
   ## populate extra data
   if (hdr$ftflgs["TXYXYS"] && hdr$ftflgs["TMULTI"]) {
     spc <- list()
-    data <- .prepare_hdr_df(data, nsubfiles = 1L)
+    data <- .prepare_hdr_df(data, n_subfiles = 1L)
   } else {
     spc <- matrix(NA, nrow = hdr$fnsub, ncol = hdr$fnpts)
-    data <- .prepare_hdr_df(data, nsubfiles = hdr$fnsub)
+    data <- .prepare_hdr_df(data, n_subfiles = hdr$fnsub)
   }
 
   ## read subfiles
@@ -989,7 +989,7 @@ hySpc.testthat::test(read_spc) <- function() {
 }
 
 
-.prepare_hdr_df <- function(data, nsubfiles) {
+.prepare_hdr_df <- function(data, n_subfiles) {
   ## the *type header elements are expressions. They need to be converted
   ## to character.
   data <- lapply(data, function(x) {
@@ -1010,7 +1010,7 @@ hySpc.testthat::test(read_spc) <- function() {
   }
 
   data <- as.data.frame(data, stringsAsFactors = FALSE)
-  data <- data[rep(1L, nsubfiles), ]
+  data <- data[rep(1L, n_subfiles), ]
 
   for (v in vector.entries) {
     data[[v]] <- unclass(data[[v]])
