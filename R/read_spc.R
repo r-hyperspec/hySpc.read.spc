@@ -621,8 +621,7 @@
   ftflgs
 }
 
-############################################################################~
-
+# Main function ###############################################################
 
 #' Import for Thermo Galactic's `spc` file format
 #'
@@ -840,6 +839,7 @@ read_spc <- function(filename,
   }
 }
 
+# Unit tests -----------------------------------------------------------------
 
 hySpc.testthat::test(read_spc) <- function() {
   context("read_spc()")
