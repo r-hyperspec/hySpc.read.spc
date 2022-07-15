@@ -113,9 +113,9 @@
 }
 
 ## helper functions ----------------------------------------------------------
-### raw.split.nul - rawToChar conversion, splitting at \0
+### .raw_split_nul - rawToChar conversion, splitting at \0
 #' @importFrom utils tail
-raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
+.raw_split_nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
                           paste.collapse = NULL) {
   # TODO make better truncation
   trunc <- rep(trunc, length.out = 2)
@@ -201,19 +201,19 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
     fztype = readBin(raw_data[31], "integer", 1, 1, signed = FALSE),
     fpost = readBin(raw_data[32], "integer", 1, 1, signed = TRUE),
     fdate = readBin(raw_data[33:36], "integer", 1, 4),
-    fres = raw.split.nul(raw_data[37:45], paste.collapse = "\r\n"),
-    fsource = raw.split.nul(raw_data[46:54], paste.collapse = "\r\n"),
+    fres = .raw_split_nul(raw_data[37:45], paste.collapse = "\r\n"),
+    fsource = .raw_split_nul(raw_data[46:54], paste.collapse = "\r\n"),
     fpeakpt = readBin(raw_data[55:56], "integer", 1, 2, signed = FALSE),
     fspare = readBin(raw_data[57:88], "numeric", 8, 4),
-    fcmnt = raw.split.nul(raw_data[89:218], paste.collapse = "\r\n"),
-    fcatxt = raw.split.nul(raw_data[219:248], trunc = c(FALSE, TRUE)),
+    fcmnt = .raw_split_nul(raw_data[89:218], paste.collapse = "\r\n"),
+    fcatxt = .raw_split_nul(raw_data[219:248], trunc = c(FALSE, TRUE)),
     flogoff = readBin(raw_data[249:252], "integer", 1, 4), # , signed = FALSE),
     fmods = readBin(raw_data[253:256], "integer", 1, 4), # , signed = FALSE),
     fprocs = readBin(raw_data[257], "integer", 1, 1, signed = TRUE),
     flevel = readBin(raw_data[258], "integer", 1, 1, signed = TRUE),
     fsampin = readBin(raw_data[259:260], "integer", 1, 2, signed = FALSE),
     ffactor = readBin(raw_data[261:264], "numeric", 1, 4),
-    fmethod = raw.split.nul(raw_data[265:312]),
+    fmethod = .raw_split_nul(raw_data[265:312]),
     fzinc = readBin(raw_data[313:316], "numeric", 1, 4), # , signed = FALSE),
     fwplanes = readBin(raw_data[317:320], "integer", 1, 4), # , signed = FALSE),
     fwinc = readBin(raw_data[321:324], "numeric", 1, 4),
