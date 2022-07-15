@@ -15,7 +15,8 @@
 #'   specified.
 #' @param glob If `TRUE` the filename is interpreted as a wildcard
 #'   containing file name pattern and expanded to all matching file names.
-#' @param keys_log2data,... All further arguments are handed over directly to [read_spc()].
+#' @param keys_log2data,... All further arguments are handed over directly
+#'        to [read_spc()].
 #' @return hyperSpec
 #' @examples
 #' ## for examples, please see `vignette ("fileio", package = "hyperSpec")`.
@@ -55,8 +56,8 @@ read_spc_Kaiser <- function(files, ..., glob = TRUE) {
   .spc_io_postprocess_optional(spc, file.keep.name = FALSE)
 }
 
-#' `read_spc_KaiserMap` is a wrapper for `read_spc_Kaiser` with predefined `log2data`
-#' to fetch the stage position for each file.
+#' `read_spc_KaiserMap()` is a wrapper for `read_spc_Kaiser()` with predefined
+#' `log2data` to fetch the stage position for each file.
 #' @rdname read-spc-Kaiser
 #' @export
 #'
@@ -82,7 +83,7 @@ read_spc_KaiserMap <- function(files, keys_log2data = NULL, ...) {
   spc
 }
 
-#' `read_spc_KaiserLowHigh` is a wrapper for `read_spc_Kaiser` for raw data that is saved
+#' `read_spc_KaiserLowHigh()` is a wrapper for `read_spc_Kaiser` for raw data that is saved
 #' in separate files for low and high wavenumber range.  The wavelength axis holds the pixel
 #' numbers, which repeat for low and high wavenumber ranges.
 #'
