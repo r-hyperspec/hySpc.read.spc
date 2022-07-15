@@ -850,10 +850,10 @@ hySpc.testthat::test(read_spc) <- function() {
   witec_path <- system.file("extdata/spc.Witec", package = "hySpc.read.spc")
   labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
 
-  old.spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO_3D.SPC", "/LC_DIODE_ARRAY.SPC"))
+  old_spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO_3D.SPC", "/LC_DIODE_ARRAY.SPC"))
 
   test_that("old file format -> error", {
-    for (f in old.spc) {
+    for (f in old_spc) {
       expect_error(read_spc(f))
     }
   })
