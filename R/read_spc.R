@@ -559,7 +559,7 @@ raw.split.nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
     log_txt <- iconv(log_txt, iconv.from, iconv.to)
     log_txt <- split_string(log_txt, "\r\n") ## spc file spec says \r\n regardless of OS
     log_txt <- split.line(log_txt, "=")
-    data <- getbynames(log_txt, keys_log2data)
+    data <- get_by_names(log_txt, keys_log2data)
   }
 
   list(log_long = log, extra.data = data)
@@ -749,7 +749,7 @@ read_spc <- function(filename,
   )
   ## TODO: remove data2log
 
-  data <- c(data, tmp$extra.data, getbynames(hdr, keys_hdr2data))
+  data <- c(data, tmp$extra.data, get_by_names(hdr, keys_hdr2data))
 
   ## preallocate spectra matrix or list for multispectra file with separate
   ## wavelength axes
@@ -1094,11 +1094,11 @@ hySpc.testthat::test(split_string) <- function() {
 
 ### --------------------------------------------------------------------------
 ###
-### getbynames - get list elements by name and if no such element exists, NA
+### get_by_names - get list elements by name and if no such element exists, NA
 ###
 ###
 
-getbynames <- function(x, e) {
+get_by_names <- function(x, e) {
   x <- x[e]
   if (length(x) > 0) {
     if (is.character(e)) {
@@ -1114,16 +1114,16 @@ getbynames <- function(x, e) {
 
 
 # Unit tests -----------------------------------------------------------------
-hySpc.testthat::test(getbynames) <- function() {
-  context("getbynames()")
+hySpc.testthat::test(get_by_names) <- function() {
+  context("get_by_names()")
 
   # Perform tests
-  test_that("getbynames() works", {
+  test_that("get_by_names() works", {
     lst <- list(a = 1, b = "b", c = 2i)
 
-    expect_equal(getbynames(lst, "a"), list(a = 1))
-    expect_equal(getbynames(lst, 1), list(a = 1))
-    expect_equal(getbynames(lst, 2), list(b = "b"))
-    expect_equal(getbynames(lst, 6)[[1]], NA)
+    expect_equal(get_by_names(lst, "a"), list(a = 1))
+    expect_equal(get_by_names(lst, 1), list(a = 1))
+    expect_equal(get_by_names(lst, 2), list(b = "b"))
+    expect_equal(get_by_names(lst, 6)[[1]], NA)
   })
 }
