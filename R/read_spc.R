@@ -476,7 +476,7 @@
 ## read subfile directory ...........................................................................
 ##
 
-.spc_subfiledir <- function(raw_data, pos, nsub) {
+.spc_subfile_dir <- function(raw_data, pos, nsub) {
   dir <- data.frame(
     ssfposn = rep(NA, nsub),
     ssfsize = rep(NA, nsub),
@@ -764,7 +764,7 @@ read_spc <- function(filename,
 
   ## read subfiles
   if (hdr$subfiledir) { ## TXYXYS
-    hdr$subfiledir <- .spc_subfiledir(f, hdr$subfiledir, hdr$fnsub)
+    hdr$subfiledir <- .spc_subfile_dir(f, hdr$subfiledir, hdr$fnsub)
 
     for (s in seq_len(hdr$fnsub)) {
       hdr <- .spc_subhdr(f, hdr$subfiledir$ssfposn[s], hdr)
