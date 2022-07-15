@@ -700,6 +700,14 @@ read_spc <- function(filename,
   ## this is the same as the offset from beginning of the file (count 0)
   ## in the .spc definition
 
+  if (missing(filename)) stop("Argument 'filename' is missing.")
+  if (filename == "") {
+    stop(
+      "Argument 'filename' is an empty string. ",
+      "Please, enter a correct file name."
+    )
+  }
+
   f <- readBin(filename, "raw", file.info(filename)$size, 1)
 
   hdr <- modifyList(.spc_file_hdr(f), hdr)
