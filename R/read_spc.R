@@ -555,7 +555,7 @@
     }
     log_txt[log_txt == .nul] <- replace.nul
     log_txt <- readChar(log_txt, length(log_txt), useBytes = T)
-    log_txt <- gsub(rawToChar(replace.nul), "\r\n", log_txt)
+    log_txt <- gsub(rawToChar(replace.nul), "\r\n", log_txt, useBytes = TRUE)
     log_txt <- iconv(log_txt, iconv.from, iconv.to)
     log_txt <- split_string(log_txt, "\r\n") ## spc file spec says \r\n regardless of OS
     log_txt <- split_line(log_txt, "=")
