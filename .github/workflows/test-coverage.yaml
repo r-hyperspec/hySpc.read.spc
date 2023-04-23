@@ -55,10 +55,6 @@ jobs:
 
       - name: Test coverage
         shell: Rscript {0}
-        run: covr::codecov()
-
-      - name: Test coverage
-        shell: Rscript {0}
         run: |
           covr::codecov(
             quiet = FALSE,
