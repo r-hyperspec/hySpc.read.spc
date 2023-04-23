@@ -1,9 +1,9 @@
-##############################################################################~
+############################################################################## ~
 # read_spc: Import Thermo Galactic's .spc file format into a hyperSpec object
 #
 # C. Beleites 2009/11/29
 #
-##############################################################################~
+############################################################################## ~
 
 ## Define constants -----------------------------------------------------------
 
@@ -116,7 +116,7 @@
 ### .raw_split_nul - rawToChar conversion, splitting at \0
 #' @importFrom utils tail
 .raw_split_nul <- function(raw, trunc = c(TRUE, TRUE), firstonly = FALSE,
-                          paste.collapse = NULL) {
+                           paste.collapse = NULL) {
   # TODO make better truncation
   trunc <- rep(trunc, length.out = 2)
 
@@ -579,8 +579,9 @@
   } else if (word) { # 2 byte fixed point integer = word
 
     list(
-      y = readBin(raw_data[pos + seq_len(npts * 2)], "integer", npts, 2, signed = TRUE) *
-        2^(exponent - 16),
+      y = readBin(
+        raw_data[pos + seq_len(npts * 2)], "integer", npts, 2, signed = TRUE
+      ) * 2^(exponent - 16),
       .last.read = pos + npts * 2
     )
   } else { # 4 byte fixed point integer = dword
@@ -693,7 +694,6 @@ read_spc <- function(filename,
                      log_txt = TRUE, log_bin = FALSE, log_disk = FALSE,
                      hdr = list(),
                      no_object = FALSE) {
-
   ## f contains the raw bytes of the file
 
   ## fpos marks the position of the last read byte
@@ -975,7 +975,9 @@ hySpc.testthat::test(read_spc) <- function() {
 
   test_that("hdr2data", {
     expect_equal(
-      colnames(read_spc(paste0(labram_path, "/LabRam-2.spc"), keys_hdr2data = TRUE)),
+      colnames(
+        read_spc(paste0(labram_path, "/LabRam-2.spc"), keys_hdr2data = TRUE)
+      ),
       c(
         "z", "z.end", "ftflgs", "fexper", "fexp", "fnpts", "ffirst",
         "flast", "fnsub", "fxtype", "fytype", "fztype", "fpost", "fdate",
