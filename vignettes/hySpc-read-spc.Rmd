@@ -56,7 +56,7 @@ source("vignette-default-settings.R", encoding = "UTF-8")
 
 # Temporary options ----------------------------------------------------------
 # Change the value of this option in "vignette-default-settings.R"
-show_reviewers_notes = getOption("show_reviewers_notes", TRUE)
+show_reviewers_notes <- getOption("show_reviewers_notes", TRUE)
 ```
 
 
@@ -74,7 +74,7 @@ knitr::write_bib(
 
 ```{r, echo = FALSE, results = "asis"}
 res <- knitr::knit_child("list-of-vignettes.md", quiet = TRUE)
-cat(res, sep = '\n')
+cat(res, sep = "\n")
 ```
 
 

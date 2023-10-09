@@ -24,7 +24,7 @@
 # Pkgdown
 ^_pkgdown\.yml$
 ^pkgdown$
- ^docs$
+^docs$
 
 
 # Directories
@@ -52,4 +52,3 @@ Rplots.pdf
 tests/testthat/fileio
 
 
-^docs$
