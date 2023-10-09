@@ -1028,13 +1028,17 @@ hySpc.testthat::test(read_spc) <- function() {
 ###
 ###
 
-split_string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
+split_string <- function(x, separator, trim_blank = TRUE, remove_empty = TRUE) {
+
+  stopifnot(length(x) == 1) # we want a single character string
+
   pos <- gregexpr(separator, x)
-  if (length(pos) == 1 && pos[[1]] == -1) {
+  pos <- pos[[1]]
+
+  if (length(pos) == 1 & pos[1] == -1) { # -1 means no match
     return(x)
   }
 
-  pos <- pos[[1]]
 
   pos <- matrix(c(
     1, pos + attr(pos, "match.length"),
@@ -1049,12 +1053,12 @@ split_string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
 
   x <- apply(pos, 1, function(p, x) substr(x, p[1], p[2]), x)
 
-  if (trim.blank) {
-    blank.pattern <- "^[[:blank:]]*([^[:blank:]]+.*[^[:blank:]]+)[[:blank:]]*$"
-    x <- sub(blank.pattern, "\\1", x)
+  if (trim_blank) {
+    blank_pattern <- "^[[:blank:]]*([^[:blank:]]+.*[^[:blank:]]+)[[:blank:]]*$"
+    x <- sub(blank_pattern, "\\1", x)
   }
 
-  if (remove.empty) {
+  if (remove_empty) {
     x <- x[sapply(x, nchar) > 0]
   }
 
@@ -1063,16 +1067,16 @@ split_string <- function(x, separator, trim.blank = TRUE, remove.empty = TRUE) {
 
 ### split_line
 
-split_line <- function(x, separator, trim.blank = TRUE) {
+split_line <- function(x, separator, trim_blank = TRUE) {
   tmp <- regexpr(separator, x)
 
   key <- substr(x, 1, tmp - 1)
   value <- substr(x, tmp + 1, nchar(x))
 
-  if (trim.blank) {
-    blank.pattern <- "^[[:blank:]]*([^[:blank:]]+.*[^[:blank:]]+)[[:blank:]]*$"
-    key <- sub(blank.pattern, "\\1", key)
-    value <- sub(blank.pattern, "\\1", value)
+  if (trim_blank) {
+    blank_pattern <- "^[[:blank:]]*([^[:blank:]]+.*[^[:blank:]]+)[[:blank:]]*$"
+    key <- sub(blank_pattern, "\\1", key)
+    value <- sub(blank_pattern, "\\1", value)
   }
 
   value <- as.list(value)
