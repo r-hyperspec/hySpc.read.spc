@@ -700,6 +700,14 @@ read_spc <- function(filename,
   ## this is the same as the offset from beginning of the file (count 0)
   ## in the .spc definition
 
+  if (missing(filename)) stop("Argument 'filename' is missing.")
+  if (filename == "") {
+    stop(
+      "Argument 'filename' is an empty string. ",
+      "Please, enter a correct file name."
+    )
+  }
+
   f <- readBin(filename, "raw", file.info(filename)$size, 1)
 
   hdr <- modifyList(.spc_file_hdr(f), hdr)
@@ -851,6 +859,11 @@ hySpc.testthat::test(read_spc) <- function() {
   labram_path <- system.file("extdata/spc.LabRam", package = "hySpc.read.spc")
 
   old_spc <- paste0(spc_path, c("/CONTOUR.SPC", "/DEMO_3D.SPC", "/LC_DIODE_ARRAY.SPC"))
+
+  test_that("read_spc() and read_spc('') fail", {
+    expect_error(read_spc(), "Argument 'filename' is missing")
+    expect_error(read_spc(""), "Argument 'filename' is an empty string")
+  })
 
   test_that("old file format -> error", {
     for (f in old_spc) {
