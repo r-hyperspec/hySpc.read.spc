@@ -95,8 +95,8 @@ read_spc_Kaiser_map <- function(files, keys_log2data = NULL, ...) {
 #' @concept io
 #'
 read_spc_low_high <- function(files = stop("file names needed"),
-                                   type = c("single", "map"),
-                                   ..., glob = TRUE) {
+                              type = c("single", "map"),
+                              ..., glob = TRUE) {
   if (glob) {
     files <- Sys.glob(files)
   }
