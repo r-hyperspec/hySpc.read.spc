@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Import Thermo Galactic's .spc File Format into a hyperSpec Object • hySpc.read.spc</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -20,7 +20,7 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -54,7 +54,7 @@
 <li>
   <a href="https://github.com/r-hyperspec/hySpc.read.spc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -65,7 +65,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="contents col-md-9">
@@ -91,7 +91,7 @@ So this website is not fully updated yet.<br></font>
 <!--
 There are two versions of **hySpc.read.spc** online documentation:
 
-a. for the [released version](https://r-hyperspec.github.io/hySpc.read.spc/) of package,  
+a. for the [released version](https://r-hyperspec.github.io/hySpc.read.spc/) of package,
 b. for the [development version](https://r-hyperspec.github.io/hySpc.read.spc/dev/) of package.
 -->
 <p>The documentation of the other <strong><code>r-hyperspec</code></strong> family packages can be found at <a href="https://r-hyperspec.github.io/" class="external-link">r-hyperspec.github.io</a>.</p>
@@ -138,7 +138,7 @@ Install from GitHub (details)
 </summary><p>You can install the in-development version of the package from <a href="https://github.com/r-hyperspec/hySpc.read.spc" class="external-link">GitHub</a> too:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span><span class="op">}</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"r-hyperspec/hySpc.read.spc"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"r-hyperspec/hySpc.read.spc"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>NOTE 1:</strong> Usually, “Windows” users need to download, install and properly configure <strong>Rtools</strong> (see <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">these instructions</a>) to make the code above work.</p>
 <p><strong>NOTE 2:</strong> This method will <strong>not</strong> install package’s documentation (help pages and vignettes) into your computer. So you can either use the <a href="https://r-hyperspec.github.io/" class="external-link">online documentation</a> or build the package from source (see the next section).</p>
 </details>
@@ -179,7 +179,7 @@ Install from Source (details)
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"remotes"</span>, <span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Install hySpc.read.spc's dependencies</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_deps.html" class="external-link">install_deps</a></span><span class="op">(</span>dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_deps</span><span class="op">(</span>dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create hySpc.read.spc's documentation</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -229,12 +229,12 @@ Install from Source (details)
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Claudia Beleites <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Erick Oduniyi <br><small class="roles"> Author </small>  </li>
+<li>Claudia Beleites <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Erick Oduniyi <br><small class="roles"> Author </small>   </li>
 <li>
-<a href="https://orcid.org/0000-0002-9500-5167" class="external-link">Vilmantas Gegzna</a> <br><small class="roles"> Author </small>  </li>
+<a href="https://orcid.org/0000-0002-9500-5167" class="external-link">Vilmantas Gegzna</a> <br><small class="roles"> Author </small>   </li>
 <li>
-<a href="http://academic.depauw.edu/hanson_web/" class="external-link">Bryan A. Hanson</a> <br><small class="roles"> Author </small>  </li>
+<a href="http://academic.depauw.edu/hanson_web/" class="external-link">Bryan A. Hanson</a> <br><small class="roles"> Author </small>   </li>
 </ul>
 </div>
 
@@ -258,16 +258,16 @@ Install from Source (details)
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
